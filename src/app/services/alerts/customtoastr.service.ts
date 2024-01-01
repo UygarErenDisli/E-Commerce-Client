@@ -4,7 +4,7 @@ import { IndividualConfig, Toast, ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root',
 })
-export class CustomtoastrService {
+export class CustomToastrService {
   constructor(private toastr: ToastrService) {}
   message(message: string, title: string, options: Partial<ToastrOptions>) {
     this.toastr[options.messageType!](message, title);

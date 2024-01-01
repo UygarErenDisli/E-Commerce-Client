@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CustomtoastrService } from './customtoastr.service';
+import { CustomToastrService } from './customtoastr.service';
 
 describe('CustomtoastrService', () => {
-  let service: CustomtoastrService;
+  let service: CustomToastrService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CustomtoastrService);
+    service = TestBed.inject(CustomToastrService);
   });
 
   it('should be created', () => {

@@ -37,16 +37,25 @@ export class CreateProductComponent extends SpinnerComponent {
     create_product.stock = parseInt(stock.value);
     create_product.price = parseFloat(price.value);
 
-    this.productService.create(create_product, () => {
-      this.hideSpinner(SpinnerType.BallSpin);
-      this.alertService.message(
-        'Successfully added product',
-        `${create_product.name}`,
-        {
-          messageType: ToastrMessageType.Success,
+    this.productService.create(
+      create_product,
+      () => {
+        this.hideSpinner(SpinnerType.BallSpin);
+        this.alertService.message(
+          'Successfully added',
+          `${create_product.name}`,
+          {
+            messageType: ToastrMessageType.Success,
+            position: ToastrPosition.TopRight,
+          }
+        );
+      },
+      (errorMessage) => {
+        this.alertService.message(errorMessage, 'Product', {
+          messageType: ToastrMessageType.Error,
           position: ToastrPosition.TopRight,
-        }
-      );
-    });
+        });
+      }
+    );
   }
 }

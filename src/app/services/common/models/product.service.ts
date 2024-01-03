@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../httpclient.service';
 import { CreateProduct } from '../../../contracts/create-product';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +9,11 @@ import { CreateProduct } from '../../../contracts/create-product';
 export class ProductService {
   constructor(private httpClint: HttpClientService) {}
 
-  create(createProduct: CreateProduct, successCallBack?: any) {
+  create(
+    createProduct: CreateProduct,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: string) => void
+  ) {
     this.httpClint
       .post(
         {
@@ -16,8 +21,19 @@ export class ProductService {
         },
         createProduct
       )
-      .subscribe(() => {
-        successCallBack();
+      .subscribe({
+        error: (errorResponse: HttpErrorResponse) => {
+          const errors: Array<{ key: string; value: Array<string> }> =
+            errorResponse.error;
+          let output = '';
+          errors.forEach((error) => {
+            error.value.forEach((errorMessage) => {
+              output += `${errorMessage}\n`;
+            });
+          });
+          errorCallBack?.(output);
+        },
+        complete: () => successCallBack?.(),
       });
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientService } from '../httpclient.service';
 import { CreateProduct } from '../../../contracts/create-product';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ListProducts } from '../../../contracts/list-products';
 
 @Injectable({
   providedIn: 'root',
@@ -35,5 +36,26 @@ export class ProductService {
         },
         complete: () => successCallBack?.(),
       });
+  }
+
+  async read(
+    pageIndex: number = 0,
+    pageSize: number = 5,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: string) => void
+  ): Promise<ListProducts | undefined> {
+    const listProducts: Promise<ListProducts | undefined> = this.httpClint
+      .get<ListProducts>({
+        controller: 'products',
+        queryString: `pageIndex=${pageIndex}&pageSize=${pageSize}`,
+      })
+      .toPromise();
+
+    listProducts
+      .then(() => successCallBack?.())
+      .catch((errorMessage: HttpErrorResponse) =>
+        errorCallBack?.(errorMessage.message)
+      );
+    return (await listProducts) ? listProducts : undefined;
   }
 }

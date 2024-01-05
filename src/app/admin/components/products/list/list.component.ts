@@ -26,6 +26,8 @@ export class ListComponent extends SpinnerComponent implements OnInit {
     'price',
     'createdDate',
     'updatedDate',
+    'edit',
+    'delete',
   ];
   dataSource: MatTableDataSource<ListProduct> = new MatTableDataSource();
 

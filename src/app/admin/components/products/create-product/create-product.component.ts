@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CreateProduct } from '../../../../contracts/create-product';
 import { ProductService } from '../../../../services/common/models/product.service';
 import {
@@ -25,6 +25,9 @@ export class CreateProductComponent extends SpinnerComponent {
   ) {
     super(spinner);
   }
+
+  @Output() productCreated: EventEmitter<CreateProduct> = new EventEmitter();
+
   create(
     name: HTMLInputElement,
     stock: HTMLInputElement,
@@ -41,6 +44,8 @@ export class CreateProductComponent extends SpinnerComponent {
       create_product,
       () => {
         this.hideSpinner(SpinnerType.BallSpin);
+        this.productCreated.emit();
+        
         this.alertService.message(
           'Successfully added',
           `${create_product.name}`,

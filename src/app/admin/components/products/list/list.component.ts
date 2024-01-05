@@ -48,10 +48,14 @@ export class ListComponent extends SpinnerComponent implements OnInit {
           this.hideSpinner(SpinnerType.BallSpin);
         },
         (errorMessage) => {
-          this.toastrAlert.message(errorMessage, 'Products', {
-            messageType: ToastrMessageType.Error,
-            position: ToastrPosition.TopRight,
-          });
+          this.toastrAlert.message(
+            'An unexpected error was encountered while getting the products',
+            'Error!!',
+            {
+              messageType: ToastrMessageType.Error,
+              position: ToastrPosition.TopRight,
+            }
+          );
         }
       );
     this.dataSource = new MatTableDataSource<ListProduct>(

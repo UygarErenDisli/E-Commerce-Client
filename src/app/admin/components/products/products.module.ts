@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DeleteDirective } from '../../../directives/admin/delete.directive';
 import { DialogModule } from '../../../dialogs/dialog.module';
+import { FileUploadModule } from '../../../services/common/file-upload/file-upload.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { DialogModule } from '../../../dialogs/dialog.module';
     MatTableModule,
     MatPaginatorModule,
     DialogModule,
+    FileUploadModule,
   ],
 })
 export class ProductsModule {}

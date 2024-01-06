@@ -11,6 +11,8 @@ import {
   ToastrMessageType,
   ToastrPosition,
 } from '../../../../services/alerts/customtoastr.service';
+import { outputAst } from '@angular/compiler';
+import { FileUploadOptions } from '../../../../services/common/file-upload/file-upload.component';
 
 @Component({
   selector: 'app-create-product',
@@ -27,7 +29,12 @@ export class CreateProductComponent extends SpinnerComponent {
   }
 
   @Output() productCreated: EventEmitter<CreateProduct> = new EventEmitter();
-
+  @Output() fileUploadOptions: Partial<FileUploadOptions> = {
+    action: 'upload',
+    controller: 'products',
+    explanation: 'Drag or Select',
+    acceptedType: '.png, .jpg',
+  };
   create(
     name: HTMLInputElement,
     stock: HTMLInputElement,
@@ -45,7 +52,7 @@ export class CreateProductComponent extends SpinnerComponent {
       () => {
         this.hideSpinner(SpinnerType.BallSpin);
         this.productCreated.emit();
-        
+
         this.alertService.message(
           'Successfully added',
           `${create_product.name}`,

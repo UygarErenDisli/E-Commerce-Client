@@ -22,6 +22,7 @@ import {
   DeleteDialogComponent,
   DeleteState,
 } from '../../dialogs/delete-dialog/delete-dialog.component';
+import { DialogService } from '../../services/common/dialog.service';
 
 @Directive({
   selector: '[appDelete]',
@@ -33,7 +34,7 @@ export class DeleteDirective {
     private httpClient: HttpClientService,
     private spinner: NgxSpinnerService,
     private alertService: CustomToastrService,
-    public dialog: MatDialog
+    private dialogService: DialogService
   ) {
     const img = _renderer.createElement('img');
     img.setAttribute('src', '../../../../../assets/delete_icon2.png');
@@ -49,51 +50,43 @@ export class DeleteDirective {
 
   @HostListener('click')
   onClick() {
-    this.openDialog(() => {
-      this.spinner.show(SpinnerType.BallSpin);
-      this.httpClient
-        .delete(
-          {
-            controller: this.controller,
-          },
-          this.id
-        )
-        .subscribe({
-          complete: () => {
-            const td: HTMLTableCellElement = this.element.nativeElement;
-            $(td.parentElement!).fadeOut(1000, () => {
-              this.callBack.emit();
-              this.spinner.hide(SpinnerType.BallSpin);
-              this.alertService.message('Deleted Successfully', 'Success', {
-                messageType: ToastrMessageType.Success,
-                position: ToastrPosition.TopRight,
-              });
-            });
-          },
-          error: (errorResponse: HttpErrorResponse) => {
-            this.spinner.hide(SpinnerType.BallSpin);
-            this.alertService.message(
-              'An unexpected error was encountered while deleting',
-              'Error',
-              {
-                messageType: ToastrMessageType.Error,
-                position: ToastrPosition.TopRight,
-              }
-            );
-          },
-        });
-    });
-  }
-
-  openDialog(onYesClick?: () => void): void {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    this.dialogService.openDialog({
+      component: DeleteDialogComponent,
       data: DeleteState.Yes,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === DeleteState.Yes) {
-        onYesClick?.();
-      }
+      afterClosed: () => {
+        this.spinner.show(SpinnerType.BallSpin);
+        this.httpClient
+          .delete(
+            {
+              controller: this.controller,
+            },
+            this.id
+          )
+          .subscribe({
+            complete: () => {
+              const td: HTMLTableCellElement = this.element.nativeElement;
+              $(td.parentElement!).fadeOut(1000, () => {
+                this.callBack.emit();
+                this.spinner.hide(SpinnerType.BallSpin);
+                this.alertService.message('Deleted Successfully', 'Success', {
+                  messageType: ToastrMessageType.Success,
+                  position: ToastrPosition.TopRight,
+                });
+              });
+            },
+            error: (errorResponse: HttpErrorResponse) => {
+              this.spinner.hide(SpinnerType.BallSpin);
+              this.alertService.message(
+                'An unexpected error was encountered while deleting',
+                'Error',
+                {
+                  messageType: ToastrMessageType.Error,
+                  position: ToastrPosition.TopRight,
+                }
+              );
+            },
+          });
+      },
     });
   }
 }

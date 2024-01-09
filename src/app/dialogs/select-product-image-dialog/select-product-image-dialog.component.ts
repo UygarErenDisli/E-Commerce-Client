@@ -12,7 +12,6 @@ import {
   DeleteDialogComponent,
   DeleteState,
 } from '../delete-dialog/delete-dialog.component';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-select-product-image-dialog',

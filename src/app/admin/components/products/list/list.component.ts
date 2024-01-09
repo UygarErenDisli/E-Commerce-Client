@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   SpinnerComponent,
   SpinnerType,
@@ -44,6 +45,9 @@ export class ListComponent extends SpinnerComponent implements OnInit {
   ) {
     super(spinner);
   }
+
+  @ViewChild(MatSort) sort!: MatSort;
+
   async getProducts() {
     this.showSpinner(SpinnerType.BallSpin);
     const listProducts: ListProducts | undefined =
@@ -69,6 +73,7 @@ export class ListComponent extends SpinnerComponent implements OnInit {
     );
 
     this.paginator!.length = listProducts?.totalCount;
+    this.dataSource.sort = this.sort;
   }
 
   getProductImages(productName: string, id: string) {
@@ -83,6 +88,12 @@ export class ListComponent extends SpinnerComponent implements OnInit {
       },
     });
   }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   async pageChanged() {
     await this.getProducts();
   }

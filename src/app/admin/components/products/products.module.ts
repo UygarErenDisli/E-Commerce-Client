@@ -15,7 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { DeleteDirective } from '../../../directives/admin/delete.directive';
 import { DialogModule } from '../../../dialogs/dialog.module';
 import { FileUploadModule } from '../../../services/common/file-upload/file-upload.module';
-
+import { MatSortModule } from '@angular/material/sort';
 @NgModule({
   declarations: [
     ProductsComponent,
@@ -34,6 +34,7 @@ import { FileUploadModule } from '../../../services/common/file-upload/file-uplo
     MatPaginatorModule,
     DialogModule,
     FileUploadModule,
+    MatSortModule,
   ],
 })
 export class ProductsModule {}

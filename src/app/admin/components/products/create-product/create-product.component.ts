@@ -29,12 +29,6 @@ export class CreateProductComponent extends SpinnerComponent {
   }
 
   @Output() productCreated: EventEmitter<CreateProduct> = new EventEmitter();
-  @Output() fileUploadOptions: Partial<FileUploadOptions> = {
-    action: 'upload',
-    controller: 'products',
-    explanation: 'Drag or Select',
-    acceptedType: '.png, .jpg',
-  };
   create(
     name: HTMLInputElement,
     stock: HTMLInputElement,

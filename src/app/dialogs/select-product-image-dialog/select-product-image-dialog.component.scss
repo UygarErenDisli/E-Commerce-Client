@@ -1,0 +1,18 @@
+.product-image-card {
+  max-width: 300px;
+  float: left;
+  margin: 5px;
+}
+
+.button {
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: red;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  background: #e62222;
+}

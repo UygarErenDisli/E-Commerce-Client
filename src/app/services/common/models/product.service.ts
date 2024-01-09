@@ -3,6 +3,8 @@ import { HttpClientService } from '../httpclient.service';
 import { CreateProduct } from '../../../contracts/create-product';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ListProducts } from '../../../contracts/list-products';
+import { Observable, firstValueFrom } from 'rxjs';
+import { ListProductImage } from '../../../contracts/list-product-images';
 
 @Injectable({
   providedIn: 'root',
@@ -57,5 +59,38 @@ export class ProductService {
         errorCallBack?.(errorMessage.message)
       );
     return (await listProducts) ? listProducts : undefined;
+  }
+
+  async readImages(id: string, successCallBack?: () => void) {
+    const imagesObservable: Observable<ListProductImage[]> = this.httpClint.get<
+      ListProductImage[]
+    >(
+      {
+        controller: 'products',
+        action: 'GetProductImages',
+      },
+      id
+    );
+    const images = await firstValueFrom(imagesObservable);
+    successCallBack?.();
+    return images;
+  }
+
+  async deleteImage(
+    productId: string,
+    imageId: string,
+    successCallBack?: () => void
+  ) {
+    await firstValueFrom(
+      this.httpClint.delete(
+        {
+          controller: 'products',
+          action: 'DeleteProductImage',
+          queryString: `imageId=${imageId}`,
+        },
+        productId
+      )
+    );
+    successCallBack?.();
   }
 }

@@ -14,7 +14,6 @@ import {
   ToastrPosition,
 } from '../../services/alerts/customtoastr.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { MatDialog } from '@angular/material/dialog';
 import { SpinnerType } from '../../base/spinner/spinner.component';
 import $ from 'jquery';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -39,7 +38,6 @@ export class DeleteDirective {
     const img = _renderer.createElement('img');
     img.setAttribute('src', '../../../../../assets/delete_icon2.png');
     img.setAttribute('style', 'cursor:pointer');
-
     _renderer.appendChild(element.nativeElement, img);
   }
 

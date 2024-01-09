@@ -27,7 +27,7 @@ export class DialogService {
 export class DialogParameters {
   component!: ComponentType<any>;
   data!: any;
-  afterClosed!: () => void;
+  afterClosed?: () => void;
   options?: Partial<DialogOptions>;
 }
 

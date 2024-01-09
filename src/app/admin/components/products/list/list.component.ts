@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import {
   SpinnerComponent,
   SpinnerType,
@@ -13,6 +13,8 @@ import {
 import { ListProduct, ListProducts } from '../../../../contracts/list-products';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { DialogService } from '../../../../services/common/dialog.service';
+import { SelectProductImageDialogComponent } from '../../../../dialogs/select-product-image-dialog/select-product-image-dialog.component';
 
 @Component({
   selector: 'app-list',
@@ -26,6 +28,7 @@ export class ListComponent extends SpinnerComponent implements OnInit {
     'price',
     'createdDate',
     'updatedDate',
+    'images',
     'edit',
     'delete',
   ];
@@ -36,7 +39,8 @@ export class ListComponent extends SpinnerComponent implements OnInit {
   constructor(
     spinner: NgxSpinnerService,
     private productService: ProductService,
-    private toastrAlert: CustomToastrService
+    private toastrAlert: CustomToastrService,
+    private dialogSerivce: DialogService
   ) {
     super(spinner);
   }
@@ -66,10 +70,28 @@ export class ListComponent extends SpinnerComponent implements OnInit {
 
     this.paginator!.length = listProducts?.totalCount;
   }
+
+  getProductImages(productName: string, id: string) {
+    const data = new ListProductDetails();
+    data.productId = id;
+    data.productName = productName;
+    this.dialogSerivce.openDialog({
+      component: SelectProductImageDialogComponent,
+      data: data,
+      options: {
+        width: '1440px',
+      },
+    });
+  }
   async pageChanged() {
     await this.getProducts();
   }
   async ngOnInit(): Promise<void> {
     await this.getProducts();
   }
+}
+
+export class ListProductDetails {
+  productId!: string;
+  productName!: string;
 }

@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Update Product</h2>
+<form class="example-form">
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field appearance="fill" class="create-form">
+      <mat-label>Name</mat-label>
+      <input matInput #txtName value="{{ product?.name }}" />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="create-form">
+      <mat-label>Stock</mat-label>
+      <input
+        matInput
+        type="number"
+        min="0"
+        value="{{ product?.stock }}"
+        #txtStock
+      />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="create-form">
+      <mat-label>Price</mat-label>
+      <input
+        matInput
+        type="number"
+        min="0"
+        value="{{ product?.price }}"
+        #txtPrice
+      />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-button
+      (click)="saveProduct(txtName, txtStock, txtPrice)"
+      cdkFocusInitial
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

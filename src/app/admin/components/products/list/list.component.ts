@@ -16,6 +16,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../../../services/common/dialog.service';
 import { SelectProductImageDialogComponent } from '../../../../dialogs/select-product-image-dialog/select-product-image-dialog.component';
+import {
+  UpdateProductDialogComponent,
+  UpdateProductState,
+} from '../../../../dialogs/update-product-dialog/update-product-dialog.component';
+import { UpdateProduct } from '../../../../contracts/update-product';
 
 @Component({
   selector: 'app-list',
@@ -36,6 +41,7 @@ export class ListComponent extends SpinnerComponent implements OnInit {
   dataSource: MatTableDataSource<ListProduct> = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     spinner: NgxSpinnerService,
@@ -45,8 +51,6 @@ export class ListComponent extends SpinnerComponent implements OnInit {
   ) {
     super(spinner);
   }
-
-  @ViewChild(MatSort) sort!: MatSort;
 
   async getProducts() {
     this.showSpinner(SpinnerType.BallSpin);
@@ -83,6 +87,18 @@ export class ListComponent extends SpinnerComponent implements OnInit {
     this.dialogSerivce.openDialog({
       component: SelectProductImageDialogComponent,
       data: data,
+      options: {
+        width: '1440px',
+      },
+    });
+  }
+
+  updateProduct(productId: string) {
+    var updateProduct = new UpdateProduct();
+    updateProduct.id = productId;
+    this.dialogSerivce.openDialog({
+      component: UpdateProductDialogComponent,
+      data: updateProduct,
       options: {
         width: '1440px',
       },

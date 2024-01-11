@@ -36,7 +36,7 @@ export class SelectProductImageDialogComponent
   currentProduct: ListProductDetails | undefined;
 
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
-    action: 'upload',
+    action: 'UploadProductImages',
     controller: 'products',
     explanation: 'Select product photos',
     acceptedType: '.png, .jpg, .jpeg, .gif',

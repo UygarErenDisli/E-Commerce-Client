@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../httpclient.service';
 import { CreateProduct } from '../../../contracts/create-product';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { ListProducts } from '../../../contracts/list-products';
 import { Observable, firstValueFrom } from 'rxjs';
 import { ListProductImage } from '../../../contracts/list-product-images';
+import { UpdateProduct } from '../../../contracts/update-product';
+import { data } from 'jquery';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +61,41 @@ export class ProductService {
         errorCallBack?.(errorMessage.message)
       );
     return (await listProducts) ? listProducts : undefined;
+  }
+
+  async getProductById(productId: string, successCallBack?: () => void) {
+    const productObservable: Observable<UpdateProduct> =
+      this.httpClint.get<UpdateProduct>(
+        {
+          controller: 'products',
+        },
+        productId
+      );
+    var product = await firstValueFrom(productObservable);
+    product.id = productId;
+    debugger;
+    successCallBack?.();
+    return product;
+  }
+
+  async updateProduct(
+    updateProduct: UpdateProduct,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: string) => void
+  ) {
+    this.httpClint
+      .put(
+        {
+          controller: 'products',
+        },
+        updateProduct
+      )
+      .subscribe({
+        error: (errorMessage: HttpErrorResponse) => {
+          errorCallBack?.(errorMessage.message);
+        },
+        complete: () => successCallBack?.(),
+      });
   }
 
   async readImages(id: string, successCallBack?: () => void) {

@@ -1,0 +1,189 @@
+<section class="vh-100" style="background-color: #eee">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                  Sign up
+                </p>
+
+                <form
+                  class="mx-1 mx-md-4"
+                  [formGroup]="registerForm!"
+                  (ngSubmit)="onSubmit(registerForm?.value)"
+                >
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="nameSurname"
+                        >Name Surname</label
+                      >
+                      <input
+                        type="text"
+                        id="nameSurname"
+                        formControlName="nameSurname"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && component?.['nameSurname']?.errors
+                        }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="submitted &&  component?.['nameSurname']?.errors?.['required']"
+                      >
+                        Please enter an name .
+                      </div>
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="
+                          submitted &&
+                          (validate('nameSurname', 'minlength') ||
+                            validate('nameSurname', 'maxlength'))
+                        "
+                      >
+                        Must be 3-50 characters long.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="userName">User Name</label>
+                      <input
+                        type="text"
+                        id="userName"
+                        formControlName="userName"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && component?.['userName']?.errors
+                        }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="submitted && validate('userName', 'required')"
+                      >
+                        Please choose a Username.
+                      </div>
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="
+                          submitted &&
+                          (validate('userName', 'minlength') ||
+                            validate('userName', 'maxlength'))
+                        "
+                      >
+                        Must be 3-25 characters long.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="email">Email</label>
+                      <input
+                        type="email"
+                        formControlName="email"
+                        id="email"
+                        class="form-control"
+                        placeholder="Email"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && component?.['email']?.errors
+                        }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="submitted && validate('email', 'required')"
+                      >
+                        Please enter a E-mail address.
+                      </div>
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="submitted && validate('email', 'email')"
+                      >
+                        Invalid E-mail
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example4c"
+                        >Password</label
+                      >
+                      <input
+                        type="password"
+                        id="form3Example4c"
+                        formControlName="password"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && component?.['password']?.errors
+                        }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="submitted && validate('password', 'required')"
+                      >
+                        Please enter a Password.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <div class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example4cd"
+                        >Repeat your password</label
+                      >
+                      <input
+                        type="password"
+                        id="form3Example4cd"
+                        formControlName="passwordConfirm"
+                        class="form-control"
+                        [ngClass]="{
+                          'is-invalid':
+                            submitted && component?.['passwordConfirm']?.errors
+                        }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="
+                          submitted && validate('passwordConfirm', 'required')
+                        "
+                      >
+                        Please confirm your Password.
+                      </div>
+                      <div
+                        style="
+                          width: 100%;
+                          margin-top: 0.25rem;
+                          font-size: 0.875em;
+                          color: var(--bs-form-invalid-color);
+                        "
+                        *ngIf=" registerForm?.errors?.['notSame'] && (!validate('passwordConfirm', 'required')) "
+                      >
+                        Passwords doesn't not match.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button
+                      [disabled]="validate('passwordConfirm', 'required') || registerForm?.errors?.['notSame'] "
+                      type="submit"
+                      class="btn btn-primary btn-lg"
+                    >
+                      Register
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

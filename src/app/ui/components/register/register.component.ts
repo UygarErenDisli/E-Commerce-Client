@@ -1,4 +1,11 @@
-import { SpinnerType } from './../../../base/spinner/spinner.component';
+import {
+  ToastrMessageType,
+  ToastrPosition,
+} from './../../../services/alerts/customtoastr.service';
+import {
+  SpinnerType,
+  SpinnerComponent,
+} from './../../../base/spinner/spinner.component';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -9,14 +16,27 @@ import {
   Validators,
 } from '@angular/forms';
 import { User } from '../../../entities/user';
+import { UserService } from '../../../services/common/models/user.service';
+import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { CreateUser } from '../../../contracts/create-user';
+import { CustomToastrService } from '../../../services/alerts/customtoastr.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export default class RegisterComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder) {}
+export default class RegisterComponent
+  extends SpinnerComponent
+  implements OnInit
+{
+  constructor(
+    spinner: NgxSpinnerService,
+    private userService: UserService,
+    private toastr: CustomToastrService
+  ) {
+    super(spinner);
+  }
 
   get component() {
     return this.registerForm?.controls;
@@ -24,39 +44,6 @@ export default class RegisterComponent implements OnInit {
   submitted: boolean = false;
   registerForm?: FormGroup;
   ngOnInit(): void {
-    // this.registerForm = this.formBuilder.group(
-    //   {
-    //     nameSurname: [
-    //       '',
-    //       [
-    //         Validators.required,
-    //         Validators.maxLength(50),
-    //         Validators.minLength(3),
-    //       ],
-    //     ],
-    //     userName: [
-    //       '',
-    //       [
-    //         Validators.required,
-    //         Validators.maxLength(50),
-    //         Validators.minLength(3),
-    //       ],
-    //     ],
-    //     email: [
-    //       '',
-    //       [Validators.required, Validators.maxLength(50), Validators.email],
-    //     ],
-    //     password: ['', [Validators.required]],
-    //     passwordConfirm: ['', [Validators.required]],
-    //   },
-    //   {
-    //     validator: (group: AbstractControl): ValidationErrors | null => {
-    //       let password = group.get('password')?.value;
-    //       let passwordConfirm = group.get('passwordConfirm')?.value;
-    //       return password === passwordConfirm ? null : { notSame: true };
-    //     },
-    //   }
-    // );
     this.registerForm = new FormGroup(
       {
         nameSurname: new FormControl('', [
@@ -83,10 +70,26 @@ export default class RegisterComponent implements OnInit {
       : { notSame: true };
   }
 
-  onSubmit(user: User) {
+  async onSubmit(user: User) {
     this.submitted = true;
     if (this.registerForm?.invalid) {
       return;
+    }
+    this.showSpinner(SpinnerType.BallSpin);
+    const result: CreateUser = await this.userService.createUser(user);
+
+    if (result.succeeded) {
+      this.hideSpinner(SpinnerType.BallSpin);
+      this.toastr.message(result.message ?? 'Successfuly Created', 'Success', {
+        messageType: ToastrMessageType.Success,
+        position: ToastrPosition.TopRight,
+      });
+    } else {
+      this.hideSpinner(SpinnerType.BallSpin);
+      this.toastr.message(result.message!, 'Error', {
+        messageType: ToastrMessageType.Error,
+        position: ToastrPosition.TopRight,
+      });
     }
   }
 

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BasketsModule } from './baskets/baskets.module';
 import { HomeModule } from './home/home.module';
 import { ProductsModule } from './products/products.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [],
@@ -13,6 +14,7 @@ import { ProductsModule } from './products/products.module';
     HomeModule,
     ProductsModule,
     RegisterModule,
+    LoginModule,
   ],
 })
 export class ComponentsModule {}

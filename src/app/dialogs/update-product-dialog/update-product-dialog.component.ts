@@ -4,7 +4,7 @@ import { Component, Inject, OnInit, numberAttribute } from '@angular/core';
 import { BaseDialog } from '../base/base-dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductService } from '../../services/common/models/product.service';
-import { UpdateProduct } from '../../contracts/update-product';
+import { UpdateProduct } from '../../contracts/product/update-product';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
   CustomToastrService,

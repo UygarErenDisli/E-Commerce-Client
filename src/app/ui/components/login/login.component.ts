@@ -31,7 +31,7 @@ export class LoginComponent extends SpinnerComponent {
     await this.userService.login(
       { userNameOrEmail: userNameOrEmail.value, password: password.value },
       () => {
-        this.toastr.message('Welcome', 'Welcome', {
+        this.toastr.message('Welcome', 'Login Successfull', {
           messageType: ToastrMessageType.Success,
           position: ToastrPosition.TopRight,
         });

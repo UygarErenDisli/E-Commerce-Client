@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../httpclient.service';
 import { User } from '../../../entities/user';
-import { CreateUser } from '../../../contracts/create-user';
+import { CreateUser } from '../../../contracts/user/create-user';
 import { Observable, first, firstValueFrom } from 'rxjs';
 import { LoginUser } from '../../../entities/login-user';
 import { log } from 'console';
 import { callbackify } from 'util';
+import { LoginUserResponse } from '../../../contracts/user/login-user-response';
+import {
+  CustomToastrService,
+  ToastrMessageType,
+  ToastrPosition,
+} from '../../alerts/customtoastr.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private httpClient: HttpClientService) {}
+  constructor(
+    private httpClient: HttpClientService,
+    private toastr: CustomToastrService
+  ) {}
 
   async createUser(user: User): Promise<CreateUser> {
     const observableResponse: Observable<CreateUser | User> =
@@ -26,8 +35,13 @@ export class UserService {
     return (await firstValueFrom(observableResponse)) as CreateUser;
   }
 
-  async login(loginUser: Partial<LoginUser>, callBackFunction?: () => void) {
-    const loginObservable: Observable<any> = this.httpClient.post(
+  async login(
+    loginUser: Partial<LoginUser>,
+    callBackFunction?: () => void
+  ): Promise<any> {
+    const loginObservable: Observable<any> = this.httpClient.post<
+      any | LoginUserResponse
+    >(
       {
         controller: 'identity',
         action: 'Login',
@@ -35,8 +49,14 @@ export class UserService {
       loginUser
     );
 
-    const response = await firstValueFrom(loginObservable);
-    callBackFunction?.();
-    return response;
+    const response: LoginUserResponse = (await firstValueFrom(
+      loginObservable
+    )) as LoginUserResponse;
+
+    if (response) {
+      localStorage.setItem('accessToken', response.accessToken);
+
+      callBackFunction?.();
+    }
   }
 }

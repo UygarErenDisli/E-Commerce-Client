@@ -18,7 +18,7 @@ import {
 import { User } from '../../../entities/user';
 import { UserService } from '../../../services/common/models/user.service';
 import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
-import { CreateUser } from '../../../contracts/create-user';
+import { CreateUser } from '../../../contracts/user/create-user';
 import { CustomToastrService } from '../../../services/alerts/customtoastr.service';
 
 @Component({

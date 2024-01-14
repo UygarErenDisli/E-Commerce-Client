@@ -5,7 +5,7 @@ import { BaseDialog } from '../base/base-dialog';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploadOptions } from '../../services/common/file-upload/file-upload.component';
 import { ProductService } from '../../services/common/models/product.service';
-import { ListProductImage } from '../../contracts/list-product-images';
+import { ListProductImage } from '../../contracts/product-images/list-product-images';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DialogService } from '../../services/common/dialog.service';
 import {

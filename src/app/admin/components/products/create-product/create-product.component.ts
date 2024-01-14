@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { CreateProduct } from '../../../../contracts/create-product';
+import { CreateProduct } from '../../../../contracts/product/create-product';
 import { ProductService } from '../../../../services/common/models/product.service';
 import {
   SpinnerComponent,

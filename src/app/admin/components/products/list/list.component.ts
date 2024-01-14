@@ -11,7 +11,10 @@ import {
   ToastrMessageType,
   ToastrPosition,
 } from '../../../../services/alerts/customtoastr.service';
-import { ListProduct, ListProducts } from '../../../../contracts/list-products';
+import {
+  ListProduct,
+  ListProducts,
+} from '../../../../contracts/product/list-products';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../../../services/common/dialog.service';
@@ -20,7 +23,7 @@ import {
   UpdateProductDialogComponent,
   UpdateProductState,
 } from '../../../../dialogs/update-product-dialog/update-product-dialog.component';
-import { UpdateProduct } from '../../../../contracts/update-product';
+import { UpdateProduct } from '../../../../contracts/product/update-product';
 
 @Component({
   selector: 'app-list',

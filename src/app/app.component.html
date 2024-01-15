@@ -25,7 +25,11 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="admin"
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="admin"
+            *ngIf="authService.isAuthenticated"
             >Admin Dashboard</a
           >
         </li>
@@ -68,13 +72,31 @@
       </form>
       <ul class="navbar-nav me-right mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="register"
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="register"
+            *ngIf="!authService.isAuthenticated"
             >Register</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="login"
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="login"
+            *ngIf="!authService.isAuthenticated"
             >Login</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="login"
+            (click)="singOut()"
+            *ngIf="authService.isAuthenticated"
+            >Log out</a
           >
         </li>
       </ul>

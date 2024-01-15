@@ -13,6 +13,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { HttpClientModule } from '@angular/common/http';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import { AuthGuardService } from './guards/common/auth.guard';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -24,6 +26,12 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('accessToken'),
+        allowedDomains: ['localhost:5158'],
+      },
+    }),
   ],
   providers: [
     provideHttpClient(withFetch()),
@@ -33,6 +41,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
       useValue: 'http://localhost:5158/api',
       multi: true,
     },
+    AuthGuardService,
   ],
   bootstrap: [AppComponent],
 })

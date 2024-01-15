@@ -1,20 +1,33 @@
 import { Injectable } from '@angular/core';
-import { IndividualConfig, Toast, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomToastrService {
   constructor(private toastr: ToastrService) {}
+
   message(message: string, title: string, options: Partial<ToastrOptions>) {
-    this.toastr[options.messageType!](message, title);
+    this.toastr[options.messageType!](message, title, {
+      positionClass: options.position ?? ToastrPosition.TopRight,
+      progressBar: options.progressBar ?? false,
+    });
+
+    setTimeout(() => {
+      this.clear();
+    }, options.timeOut);
+  }
+
+  clear(id?: number) {
+    this.toastr.clear(id);
   }
 }
 
 export class ToastrOptions {
   messageType: ToastrMessageType = ToastrMessageType.Success;
   position: ToastrPosition = ToastrPosition.TopRight;
-  delay: number = 5;
+  timeOut: number = 3000;
+  progressBar: boolean = false;
 }
 
 export enum ToastrMessageType {

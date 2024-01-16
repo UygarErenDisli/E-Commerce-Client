@@ -15,6 +15,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuardService } from './guards/common/auth.guard';
+import {
+  GoogleLoginProvider,
+  SocialAuthServiceConfig,
+  SocialLoginModule,
+} from '@abacritt/angularx-social-login';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -32,6 +37,7 @@ import { AuthGuardService } from './guards/common/auth.guard';
         allowedDomains: ['localhost:5158'],
       },
     }),
+    SocialLoginModule,
   ],
   providers: [
     provideHttpClient(withFetch()),
@@ -42,6 +48,23 @@ import { AuthGuardService } from './guards/common/auth.guard';
       multi: true,
     },
     AuthGuardService,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '574789429863-pojrkcd9nntt8ae8693dsugdk6kblk7r.apps.googleusercontent.com'
+            ),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
+    },
   ],
   bootstrap: [AppComponent],
 })

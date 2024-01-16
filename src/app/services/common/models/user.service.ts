@@ -1,17 +1,18 @@
+import { User } from './../../../entities/user';
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../httpclient.service';
-import { User } from '../../../entities/user';
 import { CreateUser } from '../../../contracts/user/create-user';
 import { Observable, first, firstValueFrom } from 'rxjs';
 import { LoginUser } from '../../../entities/login-user';
-import { log } from 'console';
-import { callbackify } from 'util';
 import { LoginUserResponse } from '../../../contracts/user/login-user-response';
 import {
   CustomToastrService,
   ToastrMessageType,
   ToastrPosition,
 } from '../../alerts/customtoastr.service';
+import { SocialUser } from '@abacritt/angularx-social-login';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { resolveSoa } from 'dns';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +56,24 @@ export class UserService {
 
     if (response) {
       localStorage.setItem('accessToken', response.accessToken);
+      callBackFunction?.();
+    }
+  }
 
+  async googleLogin(user: SocialUser, callBackFunction?: () => void) {
+    const observable: Observable<SocialUser | LoginUserResponse> =
+      this.httpClient.post<SocialUser | LoginUserResponse>(
+        {
+          controller: 'identity',
+          action: 'GoogleLogin',
+        },
+        user
+      );
+
+    const response = (await firstValueFrom(observable)) as LoginUserResponse;
+
+    if (response) {
+      localStorage.setItem('accessToken', response.accessToken);
       callBackFunction?.();
     }
   }

@@ -15,7 +15,7 @@ export class CustomToastrService {
 
     setTimeout(() => {
       this.clear();
-    }, options.timeOut);
+    }, options.timeOut ?? 3000);
   }
 
   clear(id?: number) {

@@ -12,6 +12,7 @@ import {
   ToastrPosition,
 } from '../../../services/alerts/customtoastr.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -25,9 +26,19 @@ export class LoginComponent extends SpinnerComponent {
     private toastr: CustomToastrService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private socialAuthService: SocialAuthService
   ) {
     super(spinner);
+    socialAuthService.authState.subscribe((user) => {
+      this.showSpinner(SpinnerType.BallSpin);
+      userService.googleLogin(user, () => {
+        authService.checkIdentity();
+        this.showLoginMessage();
+        this.redirect();
+        this.hideSpinner(SpinnerType.BallSpin);
+      });
+    });
   }
 
   async login(userNameOrEmail: HTMLInputElement, password: HTMLInputElement) {
@@ -36,19 +47,27 @@ export class LoginComponent extends SpinnerComponent {
       { userNameOrEmail: userNameOrEmail.value, password: password.value },
       () => {
         this.authService.checkIdentity();
-        this.activatedRoute.queryParams.subscribe((params) => {
-          const returnUrl = params['returnUrl'];
-          if (returnUrl) {
-            this.router.navigateByUrl(returnUrl);
-          }
-          this.router.navigate(['']);
-        });
-        this.toastr.message('Welcome', 'Login Successfull', {
-          messageType: ToastrMessageType.Success,
-          position: ToastrPosition.TopRight,
-        });
+        this.redirect();
+        this.showLoginMessage();
         this.hideSpinner(SpinnerType.BallSpin);
       }
     );
+  }
+
+  private redirect() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const returnUrl = params['returnUrl'];
+      if (returnUrl) {
+        this.router.navigateByUrl(returnUrl);
+      }
+      this.router.navigate(['']);
+    });
+  }
+
+  private showLoginMessage() {
+    this.toastr.message('Welcome', 'Login Successfull', {
+      messageType: ToastrMessageType.Success,
+      position: ToastrPosition.TopRight,
+    });
   }
 }

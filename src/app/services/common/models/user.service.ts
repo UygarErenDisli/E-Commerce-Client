@@ -2,26 +2,13 @@ import { User } from './../../../entities/user';
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../httpclient.service';
 import { CreateUser } from '../../../contracts/user/create-user';
-import { Observable, first, firstValueFrom } from 'rxjs';
-import { LoginUser } from '../../../entities/login-user';
-import { LoginUserResponse } from '../../../contracts/user/login-user-response';
-import {
-  CustomToastrService,
-  ToastrMessageType,
-  ToastrPosition,
-} from '../../alerts/customtoastr.service';
-import { SocialUser } from '@abacritt/angularx-social-login';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
-import { resolveSoa } from 'dns';
+import { Observable, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(
-    private httpClient: HttpClientService,
-    private toastr: CustomToastrService
-  ) {}
+  constructor(private httpClient: HttpClientService) {}
 
   async createUser(user: User): Promise<CreateUser> {
     const observableResponse: Observable<CreateUser | User> =
@@ -34,47 +21,5 @@ export class UserService {
       );
 
     return (await firstValueFrom(observableResponse)) as CreateUser;
-  }
-
-  async login(
-    loginUser: Partial<LoginUser>,
-    callBackFunction?: () => void
-  ): Promise<any> {
-    const loginObservable: Observable<any> = this.httpClient.post<
-      any | LoginUserResponse
-    >(
-      {
-        controller: 'identity',
-        action: 'Login',
-      },
-      loginUser
-    );
-
-    const response: LoginUserResponse = (await firstValueFrom(
-      loginObservable
-    )) as LoginUserResponse;
-
-    if (response) {
-      localStorage.setItem('accessToken', response.accessToken);
-      callBackFunction?.();
-    }
-  }
-
-  async googleLogin(user: SocialUser, callBackFunction?: () => void) {
-    const observable: Observable<SocialUser | LoginUserResponse> =
-      this.httpClient.post<SocialUser | LoginUserResponse>(
-        {
-          controller: 'identity',
-          action: 'GoogleLogin',
-        },
-        user
-      );
-
-    const response = (await firstValueFrom(observable)) as LoginUserResponse;
-
-    if (response) {
-      localStorage.setItem('accessToken', response.accessToken);
-      callBackFunction?.();
-    }
   }
 }

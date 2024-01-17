@@ -5,7 +5,6 @@ import {
   SpinnerType,
 } from '../../../base/spinner/spinner.component';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { UserService } from '../../../services/common/models/user.service';
 import {
   CustomToastrService,
   ToastrMessageType,
@@ -13,6 +12,7 @@ import {
 } from '../../../services/alerts/customtoastr.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { UserAuthService } from '../../../services/common/user-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +22,7 @@ import { SocialAuthService } from '@abacritt/angularx-social-login';
 export class LoginComponent extends SpinnerComponent {
   constructor(
     spinner: NgxSpinnerService,
-    private userService: UserService,
+    private userAuthService: UserAuthService,
     private toastr: CustomToastrService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
@@ -32,7 +32,7 @@ export class LoginComponent extends SpinnerComponent {
     super(spinner);
     socialAuthService.authState.subscribe((user) => {
       this.showSpinner(SpinnerType.BallSpin);
-      userService.googleLogin(user, () => {
+      userAuthService.googleLogin(user, () => {
         authService.checkIdentity();
         this.showLoginMessage();
         this.redirect();
@@ -43,7 +43,7 @@ export class LoginComponent extends SpinnerComponent {
 
   async login(userNameOrEmail: HTMLInputElement, password: HTMLInputElement) {
     this.showSpinner(SpinnerType.BallSpin);
-    await this.userService.login(
+    await this.userAuthService.login(
       { userNameOrEmail: userNameOrEmail.value, password: password.value },
       () => {
         this.authService.checkIdentity();

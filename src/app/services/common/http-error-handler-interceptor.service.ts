@@ -14,6 +14,7 @@ import {
   ToastrMessageType,
   ToastrPosition,
 } from '../alerts/customtoastr.service';
+import { UserAuthService } from './user-auth.service';
 
 export const MaxReties = 3;
 export const DelayMs = 2000;
@@ -22,7 +23,11 @@ export const DelayMs = 2000;
   providedIn: 'root',
 })
 export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
-  constructor(private router: Router, private toastr: CustomToastrService) {}
+  constructor(
+    private router: Router,
+    private toastr: CustomToastrService,
+    private userAuthService: UserAuthService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -35,7 +40,7 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
           retryError: HttpErrorResponse,
           retryAttempt: number
         ): Observable<number> => {
-          if (retryAttempt + 1 > MaxReties || retryError.status !== 500) {
+          if (retryError.status !== 500 || retryAttempt + 1 > MaxReties) {
             return throwError(() => retryError);
           }
           this.toastr.message(
@@ -54,15 +59,20 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
       catchError((error) => {
         switch (error.status) {
           case HttpStatusCode.Unauthorized:
-            this.router.navigate(['login']);
-            this.toastr.message(
-              'You are not authorized to perform this action!',
-              'Unauthorized!',
-              {
-                messageType: ToastrMessageType.Warning,
-                position: ToastrPosition.TopLeft,
-              }
-            );
+            this.userAuthService
+              .refreshTokenLogin(localStorage.getItem('refreshToken') as string)
+              .then((data) => {})
+              .catch((error) => {
+                this.router.navigate(['login']);
+                this.toastr.message(
+                  'You are not authorized to perform this action!',
+                  'Unauthorized!',
+                  {
+                    messageType: ToastrMessageType.Warning,
+                    position: ToastrPosition.TopLeft,
+                  }
+                );
+              });
             break;
           case HttpStatusCode.InternalServerError:
             this.toastr.message('Server unreachable!', 'Server error!', {

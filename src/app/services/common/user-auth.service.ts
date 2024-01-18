@@ -1,3 +1,4 @@
+import { SpinnerType } from './../../base/spinner/spinner.component';
 import { SocialUser } from '@abacritt/angularx-social-login';
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
@@ -31,6 +32,7 @@ export class UserAuthService {
 
     if (response) {
       localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
     }
     callBackFunction?.();
   }
@@ -49,6 +51,28 @@ export class UserAuthService {
 
     if (response) {
       localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+    }
+    callBackFunction?.();
+  }
+
+  async refreshTokenLogin(
+    refreshToken: string,
+    callBackFunction?: () => void
+  ): Promise<any> {
+    const observable: Observable<LoginUserResponse> = this.httpClient.post<
+      any | LoginUserResponse
+    >(
+      {
+        controller: 'auth',
+        action: 'RefreshTokenLogin',
+      },
+      { refreshToken: refreshToken }
+    );
+    const response = (await firstValueFrom(observable)) as LoginUserResponse;
+    if (response) {
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
     }
     callBackFunction?.();
   }

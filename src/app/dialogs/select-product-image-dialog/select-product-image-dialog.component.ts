@@ -12,6 +12,11 @@ import {
   DeleteDialogComponent,
   DeleteState,
 } from '../delete-dialog/delete-dialog.component';
+import {
+  CustomToastrService,
+  ToastrMessageType,
+  ToastrPosition,
+} from '../../services/alerts/customtoastr.service';
 
 @Component({
   selector: 'app-select-product-image-dialog',
@@ -28,7 +33,8 @@ export class SelectProductImageDialogComponent
     private spinner: NgxSpinnerService,
     private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA)
-    public data: ListProductDetails
+    public data: ListProductDetails,
+    private toastrService: CustomToastrService
   ) {
     super(dialogRef);
   }
@@ -38,7 +44,7 @@ export class SelectProductImageDialogComponent
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
     action: 'UploadProductImages',
     controller: 'products',
-    explanation: 'Select product photos',
+    explanation: 'Select Product Images',
     acceptedType: '.png, .jpg, .jpeg, .gif',
     queryString: `id=${this.data.productId}`,
   };
@@ -67,6 +73,36 @@ export class SelectProductImageDialogComponent
         });
       },
     });
+  }
+  changeShowCase(imageId: string) {
+    this.spinner.show(SpinnerType.BallScaleMultiple);
+    this.productService.updateShowCase(this.data.productId, imageId, () => {
+      this.spinner.hide(SpinnerType.BallScaleMultiple);
+      this.reOpenDialog();
+      this.toastrService.message(
+        `Selected Image is now showcase image for ${this.currentProduct?.productName}`,
+        'Image Updated Successfully ',
+        {
+          messageType: ToastrMessageType.Success,
+          position: ToastrPosition.TopRight,
+        }
+      );
+    });
+  }
+
+  private reOpenDialog() {
+    this.close();
+    let newData = new ListProductDetails();
+    newData.productId = this.currentProduct?.productId!;
+    newData.productName = this.currentProduct?.productName!;
+    this.currentProduct?.productId,
+      this.dialogService.openDialog({
+        component: SelectProductImageDialogComponent,
+        data: newData,
+        options: {
+          width: '1440px',
+        },
+      });
   }
 }
 

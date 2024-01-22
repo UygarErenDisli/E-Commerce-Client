@@ -6,7 +6,6 @@ import { ListProducts } from '../../../contracts/product/list-products';
 import { Observable, firstValueFrom } from 'rxjs';
 import { ListProductImage } from '../../../contracts/product-images/list-product-images';
 import { UpdateProduct } from '../../../contracts/product/update-product';
-import { data } from 'jquery';
 
 @Injectable({
   providedIn: 'root',
@@ -73,7 +72,6 @@ export class ProductService {
       );
     var product = await firstValueFrom(productObservable);
     product.id = productId;
-    debugger;
     successCallBack?.();
     return product;
   }
@@ -129,5 +127,26 @@ export class ProductService {
       )
     );
     successCallBack?.();
+  }
+
+  async updateShowCase(
+    productId: string,
+    imageId: string,
+    callBack?: () => void
+  ) {
+    const observable = this.httpClint.put(
+      {
+        controller: 'products',
+        action: 'ChangeImageToShowCase',
+      },
+      {
+        ImageId: imageId,
+        ProductId: productId,
+      }
+    );
+
+    const response = await firstValueFrom(observable);
+    callBack?.();
+    return response;
   }
 }

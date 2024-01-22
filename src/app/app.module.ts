@@ -34,7 +34,17 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem('accessToken'),
+        tokenGetter: (): string | Promise<string> => {
+          if (typeof localStorage !== 'undefined') {
+            // Access localStorage here
+            return localStorage?.getItem('accessToken')!;
+          } else {
+            return new Promise((resolve, reject) => {
+              // Resolve the promise with an empty string
+              resolve('Not Authrozed');
+            });
+          }
+        },
         allowedDomains: ['localhost:5158'],
       },
     }),

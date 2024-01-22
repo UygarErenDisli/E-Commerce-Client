@@ -1,3 +1,5 @@
+import { ListProductImage } from '../product-images/list-product-images';
+
 export class ListProducts {
   totalCount?: number;
   products?: ListProduct[];
@@ -10,4 +12,7 @@ export class ListProduct {
   price?: number;
   createdDate?: Date;
   updatedDate?: Date;
+  productImages?: ListProductImage[];
+  showCaseImagePath?: string;
+  hasShowCaseImage?: boolean;
 }

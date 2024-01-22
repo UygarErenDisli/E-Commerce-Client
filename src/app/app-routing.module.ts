@@ -51,6 +51,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'products/:pageNo',
+    loadChildren: () =>
+      import('./ui/components/products/products.module').then(
+        (module) => module.ProductsModule
+      ),
+  },
+  {
     path: 'baskets',
     loadChildren: () =>
       import('./ui/components/baskets/baskets.module').then(

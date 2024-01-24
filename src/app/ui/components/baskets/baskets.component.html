@@ -1,1 +1,60 @@
-<p>baskets works!</p>
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-4" id="exampleModalLabel">Shopping Cart</h1>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <h1 class="fs-5" style="margin-bottom: 0">Total Items: {{ totalItems }}</h1>
+    <h1 class="fs-5">Total Price: {{ totalPrice }}</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Product</th>
+          <th scope="col">Price</th>
+          <th scope="col">Amount</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="{{ basketItem.basketItemId }}"
+          *ngFor="let basketItem of basketItems; let i = index"
+        >
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ basketItem.name }}</td>
+          <td>{{ basketItem.price }}</td>
+          <td>
+            <input
+              [value]="basketItem.quantity"
+              type="number"
+              style="width: 60px"
+              data-id="{{ basketItem.basketItemId }}"
+              (change)="updateQuantity($event, basketItem.basketItemId)"
+            />
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="removeBasketItem(basketItem.basketItemId)"
+            >
+              X
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+      Close
+    </button>
+    <button type="button" class="btn btn-success">Complete Order</button>
+  </div>
+</div>

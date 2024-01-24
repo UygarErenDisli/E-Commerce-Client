@@ -17,39 +17,14 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuardService } from './guards/common/auth.guard';
 import {
   GoogleLoginProvider,
+  GoogleSigninButtonModule,
   SocialAuthServiceConfig,
   SocialLoginModule,
 } from '@abacritt/angularx-social-login';
 import { HttpErrorHandlerInterceptorService } from './services/common/http-error-handler-interceptor.service';
+import { DynamicComponentLoaderDirective } from './directives/common/dynamic-component-loader.directive';
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AdminModule,
-    UiModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    NgxSpinnerModule,
-    HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: (): string | Promise<string> => {
-          if (typeof localStorage !== 'undefined') {
-            // Access localStorage here
-            return localStorage?.getItem('accessToken')!;
-          } else {
-            return new Promise((resolve, reject) => {
-              // Resolve the promise with an empty string
-              resolve('Not Authrozed');
-            });
-          }
-        },
-        allowedDomains: ['localhost:5158'],
-      },
-    }),
-    SocialLoginModule,
-  ],
+  declarations: [AppComponent, DynamicComponentLoaderDirective],
   providers: [
     provideHttpClient(withFetch()),
     provideClientHydration(),
@@ -83,5 +58,33 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
     },
   ],
   bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AdminModule,
+    UiModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    NgxSpinnerModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: (): string | Promise<string> => {
+          if (typeof localStorage !== 'undefined') {
+            // Access localStorage here
+            return localStorage?.getItem('accessToken')!;
+          } else {
+            return new Promise((resolve, reject) => {
+              // Resolve the promise with an empty string
+              resolve('Not Authrozed');
+            });
+          }
+        },
+        allowedDomains: ['localhost:5158'],
+      },
+    }),
+    SocialLoginModule,
+    GoogleSigninButtonModule,
+  ],
 })
 export class AppModule {}

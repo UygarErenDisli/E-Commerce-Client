@@ -1,3 +1,4 @@
+import { ToastrPosition } from './../../../../services/alerts/customtoastr.service';
 import {
   ListProduct,
   ListProducts,
@@ -10,6 +11,11 @@ import { BaseUrl } from '../../../../contracts/files/base-url';
 import { param } from 'jquery';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from '../../../../base/spinner/spinner.component';
+import { BasketService } from '../../../../services/common/models/basket.service';
+import {
+  CustomToastrService,
+  ToastrMessageType,
+} from '../../../../services/alerts/customtoastr.service';
 
 @Component({
   selector: 'app-list',
@@ -29,8 +35,10 @@ export class ListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private filesService: FilesService,
+    private basketServive: BasketService,
     private activatedRouter: ActivatedRoute,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private toastr: CustomToastrService
   ) {}
 
   async ngOnInit() {
@@ -126,5 +134,15 @@ export class ListComponent implements OnInit {
         }
       }
     }
+  }
+
+  async addItemToBasket(productId: string) {
+    this.spinner.show(SpinnerType.BallSpin);
+    await this.basketServive.addItemToBasket(productId, 1);
+    this.toastr.message('Product Added To Basket', 'Product Added', {
+      messageType: ToastrMessageType.Success,
+      position: ToastrPosition.TopRight,
+    });
+    this.spinner.hide(SpinnerType.BallSpin);
   }
 }

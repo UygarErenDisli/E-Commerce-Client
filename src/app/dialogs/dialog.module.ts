@@ -9,12 +9,16 @@ import { MatCardModule } from '@angular/material/card';
 import { UpdateProductDialogComponent } from './update-product-dialog/update-product-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DeleteBasketItemDialogComponent } from './delete-basket-item-dialog/delete-basket-item-dialog.component';
+import { CompleteShoppingDialogComponent } from './complete-shopping-dialog/complete-shopping-dialog.component';
 
 @NgModule({
   declarations: [
     DeleteDialogComponent,
     SelectProductImageDialogComponent,
     UpdateProductDialogComponent,
+    DeleteBasketItemDialogComponent,
+    CompleteShoppingDialogComponent,
   ],
   imports: [
     CommonModule,

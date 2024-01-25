@@ -33,6 +33,11 @@ import { DynamicComponentLoaderDirective } from './directives/common/dynamic-com
       useValue: 'http://localhost:5158/api',
       multi: true,
     },
+    {
+      provide: 'domainUrl',
+      useValue: 'http://localhost:5158',
+      multi: true,
+    },
     AuthGuardService,
     {
       provide: 'SocialAuthServiceConfig',

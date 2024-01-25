@@ -1,6 +1,6 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h1 class="modal-title fs-4" id="exampleModalLabel">Shopping Cart</h1>
+    <h1 class="modal-title fs-4" id="basketModalLabel">Shopping Cart</h1>
     <button
       type="button"
       class="btn-close"
@@ -55,6 +55,8 @@
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
       Close
     </button>
-    <button type="button" class="btn btn-success">Complete Order</button>
+    <button type="button" class="btn btn-success" (click)="completeShopping()">
+      Complete Shopping
+    </button>
   </div>
 </div>

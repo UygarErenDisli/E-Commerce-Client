@@ -25,15 +25,25 @@ export class DashboardComponent extends SpinnerComponent implements OnInit {
     private signalRservice: SignalRService
   ) {
     super(spinner);
-    signalRservice.start(HubUrls.ProductAdded);
   }
   ngOnInit(): void {
     this.signalRservice.on(
+      HubUrls.ProductAdded,
       SignalRFunctionNames.ReceiveProductAddedMessageFunction,
       (message: string) => {
         this.toastr.message(message, 'SignalR', {
           messageType: ToastrMessageType.Info,
           position: ToastrPosition.TopRight,
+        });
+      }
+    );
+    this.signalRservice.on(
+      HubUrls.OrderCreated,
+      SignalRFunctionNames.ReceiveOrderCreatedMessageFunction,
+      (message: string) => {
+        this.toastr.message(message, 'SignalR', {
+          messageType: ToastrMessageType.Info,
+          position: ToastrPosition.TopCenter,
         });
       }
     );

@@ -1,67 +1,58 @@
-import { fileURLToPath } from 'node:url';
-import { Injectable } from '@angular/core';
-import {
-  HubConnection,
-  HubConnectionBuilder,
-  HubConnectionState,
-} from '@microsoft/signalr';
+import { Inject, Injectable } from '@angular/core';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 import { _CoalescedStyleScheduler } from '@angular/cdk/table';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignalRService {
-  private _connection: HubConnection | undefined;
-
-  get connection(): HubConnection | undefined {
-    return this._connection;
-  }
-
-  constructor() {}
+  constructor(@Inject('domainUrl') private domainUrl: string) {}
 
   start(hubUrl: string) {
-    if (
-      !this.connection ||
-      this.connection.state === HubConnectionState.Disconnected
-    ) {
-      const builder: HubConnectionBuilder = new HubConnectionBuilder();
+    hubUrl = this.domainUrl + hubUrl;
 
-      const hubConnection = builder
-        .withUrl(hubUrl)
-        .withAutomaticReconnect()
-        .build();
+    const builder: HubConnectionBuilder = new HubConnectionBuilder();
 
-      hubConnection
-        .start()
-        .then((value) => {
-          console.log('Connection successfully connectted');
-        })
-        .catch((error) => {
-          setTimeout(() => {
-            this.start(hubUrl);
-          }, 2000);
-        });
+    const hubConnection = builder
+      .withUrl(hubUrl)
+      .withAutomaticReconnect()
+      .build();
 
-      this._connection = hubConnection;
-
-      this._connection.onreconnected((connectionId) => {
-        console.log('Connection successfully reconnectted');
+    hubConnection
+      .start()
+      .then((value) => {
+        console.log('Connection successfully connectted');
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          this.start(hubUrl);
+        }, 2000);
       });
-    }
+
+    hubConnection.onreconnected((connectionId) => {
+      console.log('Connection successfully reconnectted');
+    });
+
+    return hubConnection;
   }
   invoke(
+    hubUrl: string,
     methodName: string,
     message: any,
     successCallBack?: (value: any) => void,
     errorCallBack?: (error: any) => void
   ) {
-    this.connection
-      ?.invoke(methodName, message)
+    this.start(hubUrl)
+      .invoke(methodName, message)
       .then(successCallBack)
       .catch(errorCallBack);
   }
 
-  on(methodName: string, callBack: (...message: any[]) => void) {
-    this.connection?.on(methodName, callBack);
+  on(
+    hubUrl: string,
+    methodName: string,
+    callBack: (...message: any[]) => void
+  ) {
+    this.start(hubUrl).on(methodName, callBack);
   }
 }

@@ -16,13 +16,9 @@ import { DeleteDirective } from '../../../directives/admin/delete.directive';
 import { DialogModule } from '../../../dialogs/dialog.module';
 import { FileUploadModule } from '../../../services/common/file-upload/file-upload.module';
 import { MatSortModule } from '@angular/material/sort';
+import { DeleteDirectiveModule } from '../../../directives/admin/delete-directive.module';
 @NgModule({
-  declarations: [
-    ProductsComponent,
-    CreateProductComponent,
-    ListComponent,
-    DeleteDirective,
-  ],
+  declarations: [ProductsComponent, CreateProductComponent, ListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([{ path: '', component: ProductsComponent }]),
@@ -35,6 +31,7 @@ import { MatSortModule } from '@angular/material/sort';
     DialogModule,
     FileUploadModule,
     MatSortModule,
+    DeleteDirectiveModule,
   ],
 })
 export class ProductsModule {}

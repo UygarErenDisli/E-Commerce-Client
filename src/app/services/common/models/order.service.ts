@@ -3,6 +3,7 @@ import { HttpClientService } from '../httpclient.service';
 import { CreateOrder } from '../../../contracts/order/create-order';
 import { Observable, firstValueFrom } from 'rxjs';
 import { ListOrders } from '../../../contracts/order/list-order';
+import { DetailedOrder } from '../../../contracts/order/single-detailed-order';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,27 @@ export class OrderService {
       controller: 'orders',
       queryString: `pageIndex=${pageIndex}&pageSize=${pageSize}`,
     });
+
+    const promiseData = firstValueFrom(observable);
+    promiseData
+      .then((_) => successCallBack?.())
+      .catch((errorMessage) => errorCallBack?.(errorMessage));
+
+    return await promiseData;
+  }
+
+  async getOrderById(
+    id: string,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: any) => void
+  ): Promise<DetailedOrder> {
+    const observable: Observable<DetailedOrder> =
+      this.httClient.get<DetailedOrder>(
+        {
+          controller: 'orders',
+        },
+        id
+      );
 
     const promiseData = firstValueFrom(observable);
     promiseData

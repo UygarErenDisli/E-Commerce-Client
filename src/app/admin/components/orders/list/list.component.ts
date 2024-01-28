@@ -15,6 +15,7 @@ import {
 import { DialogService } from '../../../../services/common/dialog.service';
 import { OrderService } from '../../../../services/common/models/order.service';
 import { ListOrder, ListOrders } from '../../../../contracts/order/list-order';
+import { DetailedOrderDialogComponent } from '../../../../dialogs/detailed-order-dialog/detailed-order-dialog.component';
 
 @Component({
   selector: 'app-list',
@@ -28,6 +29,7 @@ export class ListComponent extends SpinnerComponent {
     'userEmail',
     'totalPrice',
     'createdDate',
+    'detail',
     'delete',
   ];
   dataSource: MatTableDataSource<ListOrder> = new MatTableDataSource();
@@ -46,7 +48,6 @@ export class ListComponent extends SpinnerComponent {
 
   async getOrders() {
     this.showSpinner(SpinnerType.BallSpin);
-
     const listOrdes: ListOrders = await this.orderService.getAllOrders(
       this.paginator ? this.paginator.pageIndex : 0,
       this.paginator ? this.paginator.pageSize : 5,
@@ -73,6 +74,16 @@ export class ListComponent extends SpinnerComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  openOrderDetail(orderId: string) {
+    this.dialogSerivce.openDialog({
+      component: DetailedOrderDialogComponent,
+      data: orderId,
+      options: {
+        width: '1440px',
+      },
+    });
   }
 
   async pageChanged() {

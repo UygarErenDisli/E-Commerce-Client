@@ -1,0 +1,130 @@
+<div>
+  <div class="left-div">
+    <h2 mat-dialog-title>Order No: {{ detailedOrder.orderCode }}</h2>
+    <mat-list>
+      <mat-list-item>User Name: {{ detailedOrder.userName }}</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>User Email: {{ detailedOrder.userEmail }}</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>Order Date: {{ formatedOrderDate }}</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>Order Time: {{ formatedOrderTime }}</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item class="description-list-wrapping" [lines]="3">
+        <span matListItemTitle>Order Description:</span>
+        {{ detailedOrder.description }}
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div class="right-div">
+    <h2 mat-dialog-title>Order Address</h2>
+    <mat-list>
+      <mat-list-item>Street: {{ detailedOrder.address.street }}</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>City: {{ detailedOrder.address.city }}</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>State: {{ detailedOrder.address.state }}</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item
+        >Country: {{ detailedOrder.address.country }}</mat-list-item
+      >
+      <mat-divider></mat-divider>
+      <mat-list-item
+        >ZipCode: {{ detailedOrder.address.zipCode }}</mat-list-item
+      >
+      <mat-divider></mat-divider>
+    </mat-list>
+  </div>
+</div>
+<mat-divider></mat-divider>
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Ex. Product Name"
+    #input
+  />
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="productName">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Product Name"
+    >
+      Product Name
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.productName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Price"
+    >
+      Price
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.price | currency }}</td>
+  </ng-container>
+  <ng-container matColumnDef="quantity">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Quantity"
+    >
+      Quantity
+    </th>
+    <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="totalPrice">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Total price"
+    >
+      Total Price
+    </th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.price * element.quantity | currency }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-divider></mat-divider>
+<div>
+  <div class="sub-total-div">
+    <div>
+      <h2 class="sub-total-title">SubTotal:</h2>
+      <h2 class="sub-total-h2">{{ detailedOrder.totalPrice | currency }}</h2>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="sub-total-div">
+      <div>
+        <h2 class="sub-total-title" style="padding-right: 25px">NO TAX:</h2>
+        <h2 class="sub-total-h2">
+          <s> {{ "0 " | currency }}</s>
+        </h2>
+      </div>
+      <div>
+        <h2 class="sub-total-title">Total incl.tax:</h2>
+        <h2 class="sub-total-h2">{{ detailedOrder.totalPrice | currency }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-divider></mat-divider>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button mat-dialog-close>Mark As Complete</button>
+</mat-dialog-actions>

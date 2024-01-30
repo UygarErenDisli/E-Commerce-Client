@@ -1,0 +1,79 @@
+::ng-deep {
+  .cdk-overlay-container {
+    z-index: 999999999999;
+  }
+}
+.address-form-group {
+  .address-form-group-field {
+    padding: 5px;
+  }
+}
+.confirm-address-form-group {
+  float: left;
+  width: 50%;
+  .confirm-address-form-group-field {
+    padding: 5px;
+  }
+}
+
+table {
+  overflow: auto;
+  width: 50%;
+  height: 50%;
+}
+
+.table-wrap {
+  overflow: auto;
+  width: 50%;
+  max-height: 248px;
+  float: right;
+}
+
+.sub-total-main-div {
+  padding-top: 10px;
+  padding-right: 10px;
+}
+.sub-total-div {
+  float: right;
+  text-align: right;
+}
+
+.sub-total-title {
+  color: lightgrey;
+  font-size: medium;
+  margin: 0;
+  padding: 0;
+  padding-right: 15px;
+  display: inline;
+}
+.sub-total-h2 {
+  color: lightgrey;
+  font-size: medium;
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+.confirm-step-buttons-div {
+  text-align: center;
+  padding-top: 20px;
+  position: relative;
+
+  .confirm-step-buttons {
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+.submitting-stage-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .submitting-stage-labels {
+    font-size: x-large;
+    color: white;
+    text-align: center;
+  }
+}

@@ -6,23 +6,13 @@ import {
 import { BasketService } from './../../../services/common/models/basket.service';
 import { Component, OnInit } from '@angular/core';
 import { ListBasketItems } from '../../../contracts/basket/list-basket-items';
-import { OrderService } from '../../../services/common/models/order.service';
-import { CreateOrder } from '../../../contracts/order/create-order';
 import { DialogService } from '../../../services/common/dialog.service';
-import {
-  CustomToastrService,
-  ToastrMessageType,
-  ToastrPosition,
-} from '../../../services/alerts/customtoastr.service';
+
 import {
   DeleteBasketItemDialogComponent,
   DeleteBasketItemDialogState,
 } from '../../../dialogs/delete-basket-item-dialog/delete-basket-item-dialog.component';
-import {
-  CompleteShoppingDialogComponent,
-  CompleteShoppingState,
-} from '../../../dialogs/complete-shopping-dialog/complete-shopping-dialog.component';
-import { Router } from '@angular/router';
+import { CheckoutDialogComponent } from '../../../dialogs/checkout-dialog/checkout-dialog.component';
 
 declare var $: any;
 
@@ -39,10 +29,7 @@ export class BasketsComponent extends SpinnerComponent implements OnInit {
   constructor(
     spinner: NgxSpinnerService,
     private basketService: BasketService,
-    private orderService: OrderService,
-    private dialogService: DialogService,
-    private toastr: CustomToastrService,
-    private router: Router
+    private dialogService: DialogService
   ) {
     super(spinner);
   }
@@ -86,26 +73,16 @@ export class BasketsComponent extends SpinnerComponent implements OnInit {
   }
 
   async completeShopping() {
+    $('#basketModal').modal('hide');
     this.dialogService.openDialog({
-      component: CompleteShoppingDialogComponent,
-      data: CompleteShoppingState.Yes,
-      afterClosed: async () => {
-        this.showSpinner(SpinnerType.BallCLipRotate);
-        let createOrderTest = new CreateOrder();
-        createOrderTest.City = 'Istanbul';
-        createOrderTest.Country = 'Turkey';
-        createOrderTest.State = 'Turkey';
-        createOrderTest.Street = 'Test Street';
-        createOrderTest.ZipCode = '34100';
-        createOrderTest.Description = 'This is a test order';
-        await this.orderService.completeShopping(createOrderTest);
-        $('#basketModal').modal('hide');
-        this.router.navigate(['/']);
-        this.toastr.message('Successfully created an order', 'Order Created', {
-          messageType: ToastrMessageType.Success,
-          position: ToastrPosition.TopCenter,
-        });
-        this.hideSpinner(SpinnerType.BallCLipRotate);
+      component: CheckoutDialogComponent,
+      data: {
+        basketItems: this.basketItems,
+        totalItems: this.totalItems,
+        totalPrice: this.totalPrice,
+      },
+      options: {
+        width: '1440px',
       },
     });
   }

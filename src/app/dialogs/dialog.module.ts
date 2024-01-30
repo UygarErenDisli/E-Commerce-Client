@@ -15,7 +15,10 @@ import { DetailedOrderDialogComponent } from './detailed-order-dialog/detailed-o
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-
+import { CheckoutDialogComponent } from './checkout-dialog/checkout-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatStepperModule } from '@angular/material/stepper';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     DeleteDialogComponent,
@@ -24,6 +27,7 @@ import { MatDividerModule } from '@angular/material/divider';
     DeleteBasketItemDialogComponent,
     CompleteShoppingDialogComponent,
     DetailedOrderDialogComponent,
+    CheckoutDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +40,10 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTableModule,
     MatListModule,
     MatDividerModule,
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class DialogModule {}

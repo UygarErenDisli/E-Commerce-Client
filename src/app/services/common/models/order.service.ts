@@ -51,7 +51,11 @@ export class OrderService {
     return await promiseData;
   }
 
-  async completeShopping(order: CreateOrder): Promise<any> {
+  async completeShopping(
+    order: Partial<CreateOrder>,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: any) => void
+  ): Promise<any> {
     const observable: Observable<any> = this.httClient.post(
       {
         controller: 'orders',
@@ -59,6 +63,14 @@ export class OrderService {
       order
     );
 
-    return await firstValueFrom(observable);
+    const promise = firstValueFrom(observable);
+    promise
+      .then((_) => {
+        successCallBack?.();
+      })
+      .catch((errorMessage) => {
+        errorCallBack?.(errorMessage);
+      });
+    return await promise;
   }
 }

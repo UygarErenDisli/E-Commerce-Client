@@ -22,6 +22,9 @@ export class DialogService {
       }
     });
   }
+  closeAllDialogs(): void {
+    this.dialog.closeAll();
+  }
 }
 
 export class DialogParameters {

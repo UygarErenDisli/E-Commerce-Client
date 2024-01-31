@@ -16,6 +16,12 @@ import {
   DetailedOrder,
   OrderBasketItems,
 } from '../../contracts/order/single-detailed-order';
+import { DialogService } from '../../services/common/dialog.service';
+import {
+  CompleteOrderDialogComponent,
+  CompleteOrderDialogState,
+} from '../complete-order-dialog/complete-order-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detailed-order-dialog',
@@ -45,7 +51,9 @@ export class DetailedOrderDialogComponent
     @Inject(MAT_DIALOG_DATA) public data: DetailedOrderDialogState | string,
     private orderService: OrderService,
     private spinner: NgxSpinnerService,
-    private toastr: CustomToastrService
+    private toastr: CustomToastrService,
+    private dialogService: DialogService,
+    private router: Router
   ) {
     super(dialogRef);
   }
@@ -97,6 +105,30 @@ export class DetailedOrderDialogComponent
 
     this.formatedOrderDate = `${orderDates[2]}/${orderDates[1]}/${orderDates[0]}`;
     this.formatedOrderTime = `${orderTimes[0]}:${orderTimes[1]}`;
+  }
+
+  completeOrder() {
+    this.dialogService.openDialog({
+      component: CompleteOrderDialogComponent,
+      data: CompleteOrderDialogState.Yes,
+      afterClosed: () => {
+        this.spinner.show(SpinnerType.BallSpin);
+        this.orderService.completeOrder(this.data as string, () => {
+          this.dialogRef.close();
+          const url = this.router.url;
+          this.router
+            .navigateByUrl('/', { skipLocationChange: true })
+            .then(() => {
+              this.router.navigate([url]);
+            });
+          this.spinner.hide(SpinnerType.BallSpin);
+          this.toastr.message('Order Marked as Completed', 'Success', {
+            messageType: ToastrMessageType.Success,
+            position: ToastrPosition.TopCenter,
+          });
+        });
+      },
+    });
   }
 }
 

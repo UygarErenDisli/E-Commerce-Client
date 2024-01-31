@@ -47,3 +47,12 @@
   padding: 0;
   display: inline;
 }
+
+table {
+  overflow: auto;
+}
+
+.table-wrap {
+  overflow: auto;
+  max-height: 248px;
+}

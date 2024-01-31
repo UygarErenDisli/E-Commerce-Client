@@ -8,6 +8,7 @@ export class DetailedOrder {
   address!: OrderAddress;
   basketItems!: OrderBasketItems[];
   createdDate!: Date;
+  isCompleted!: boolean;
 }
 
 export class OrderAddress {

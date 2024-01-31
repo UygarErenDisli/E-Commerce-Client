@@ -10,4 +10,5 @@ export class ListOrder {
   userEmail!: string;
   totalPrice!: number;
   createdDate!: Date;
+  isCompleted!: boolean;
 }

@@ -73,4 +73,27 @@ export class OrderService {
       });
     return await promise;
   }
+
+  async completeOrder(
+    orderId: string,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: any) => void
+  ) {
+    const observable = this.httClient.post(
+      {
+        controller: 'orders',
+        action: 'CompleteOrder',
+      },
+      {
+        Id: orderId,
+      }
+    );
+
+    const promise = firstValueFrom(observable);
+    promise
+      .then((_) => successCallBack?.())
+      .catch((errorMessage) => errorCallBack?.(errorMessage));
+
+    await promise;
+  }
 }

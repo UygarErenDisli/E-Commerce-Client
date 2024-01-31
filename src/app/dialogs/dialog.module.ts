@@ -19,6 +19,7 @@ import { CheckoutDialogComponent } from './checkout-dialog/checkout-dialog.compo
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CompleteOrderDialogComponent } from './complete-order-dialog/complete-order-dialog.component';
 @NgModule({
   declarations: [
     DeleteDialogComponent,
@@ -28,6 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CompleteShoppingDialogComponent,
     DetailedOrderDialogComponent,
     CheckoutDialogComponent,
+    CompleteOrderDialogComponent,
   ],
   imports: [
     CommonModule,

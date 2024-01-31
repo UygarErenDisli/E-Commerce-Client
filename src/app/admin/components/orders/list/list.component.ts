@@ -29,6 +29,7 @@ export class ListComponent extends SpinnerComponent {
     'userEmail',
     'totalPrice',
     'createdDate',
+    'isCompleted',
     'detail',
     'delete',
   ];

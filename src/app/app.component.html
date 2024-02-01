@@ -59,25 +59,66 @@
           >
         </li>
       </ul>
-      <form class="d-flex">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <div class="dropdown dropstart">
         <button
           *ngIf="authService.isAuthenticated"
+          class="btn btn-success dropdown-toggle"
           type="button"
-          class="btn btn-success"
-          data-bs-toggle="modal"
-          data-bs-target="#basketModal"
-          (click)="loadBasketComponent()"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-expanded="false"
         >
-          Basket
+          <i class="bi bi-bell-fill" (click)="getNotifications()"></i>
         </button>
-      </form>
+        <ul
+          role="menu"
+          class="dropdown-menu dropdown-menu-dark notifications"
+          aria-labelledby="notificationDropdown"
+        >
+          <div class="notifications-heading">
+            <h4 class="menu-title">Notifications</h4>
+          </div>
+          <li class="divider"></li>
+          <div class="notifications-wrapper">
+            <div
+              class="notification-item"
+              *ngFor="let notification of userNotifications"
+              id="{{ notification.id }}"
+            >
+              <h4 class="item-title">
+                {{ notification.subject }}
+                <i
+                  class="bi bi-x-circle"
+                  style="float: right; cursor: pointer"
+                  (click)="deleteNotification(notification.id)"
+                ></i>
+              </h4>
+              <p class="item-info">
+                {{ notification.message }}
+              </p>
+              <h4>{{ notification.notificationDate }}</h4>
+              <hr />
+            </div>
+          </div>
+          <li class="divider"></li>
+          <div class="notification-footer">
+            <h4 class="menu-title">
+              Total Notifications:
+              {{ userNotifications?.length }}
+            </h4>
+          </div>
+        </ul>
+      </div>
+      <button
+        *ngIf="authService.isAuthenticated"
+        type="button"
+        class="btn btn-success"
+        data-bs-toggle="modal"
+        data-bs-target="#basketModal"
+        (click)="loadBasketComponent()"
+      >
+        <i class="bi bi-basket"></i>
+      </button>
       <ul class="navbar-nav me-right mb-2 mb-lg-0">
         <li class="nav-item">
           <a

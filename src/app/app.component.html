@@ -67,8 +67,9 @@
           data-bs-toggle="dropdown"
           data-bs-auto-close="outside"
           aria-expanded="false"
+          (click)="getNotifications()"
         >
-          <i class="bi bi-bell-fill" (click)="getNotifications()"></i>
+          <i class="bi bi-bell-fill"></i>
         </button>
         <ul
           role="menu"

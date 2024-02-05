@@ -11,8 +11,6 @@ import {
   ToastrMessageType,
   ToastrPosition,
 } from '../../../../services/alerts/customtoastr.service';
-import { outputAst } from '@angular/compiler';
-import { FileUploadOptions } from '../../../../services/common/file-upload/file-upload.component';
 
 @Component({
   selector: 'app-create-product',

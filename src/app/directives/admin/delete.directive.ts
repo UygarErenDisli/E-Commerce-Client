@@ -43,6 +43,7 @@ export class DeleteDirective {
 
   @Input() id: string | undefined;
   @Input() controller: string | undefined;
+  @Input() itemName: string = '';
 
   @Output() callBack: EventEmitter<any> = new EventEmitter();
 
@@ -66,14 +67,20 @@ export class DeleteDirective {
               $(td.parentElement!).fadeOut(1000, () => {
                 this.callBack.emit();
                 this.spinner.hide(SpinnerType.BallSpin);
-                this.alertService.message('Deleted Successfully', 'Success', {
-                  messageType: ToastrMessageType.Success,
-                  position: ToastrPosition.TopRight,
-                });
+                this.alertService.message(
+                  `${this.itemName} Deleted Successfully`,
+                  'Success',
+                  {
+                    messageType: ToastrMessageType.Success,
+                    position: ToastrPosition.TopRight,
+                  }
+                );
               });
             },
             error: (errorResponse: HttpErrorResponse) => {
+              const td: HTMLTableCellElement = this.element.nativeElement;
               this.spinner.hide(SpinnerType.BallSpin);
+              $(td.parentElement!).fadeIn(300);
               this.alertService.message(
                 'An unexpected error was encountered while deleting',
                 'Error',

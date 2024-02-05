@@ -23,6 +23,8 @@ import { CompleteOrderDialogComponent } from './complete-order-dialog/complete-o
 import { MenuActionsListDialogComponent } from './menu-actions-list-dialog/menu-actions-list-dialog.component';
 import { MatSortModule } from '@angular/material/sort';
 import { AddRoleToActionDialogComponent } from './add-role-to-action-dialog/add-role-to-action-dialog.component';
+import { AddRoleDialogComponent } from './add-role-dialog/add-role-dialog.component';
+import { UpdateRoleDialogComponent } from './update-role-dialog/update-role-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { AddRoleToActionDialogComponent } from './add-role-to-action-dialog/add-
     CompleteOrderDialogComponent,
     MenuActionsListDialogComponent,
     AddRoleToActionDialogComponent,
+    AddRoleDialogComponent,
+    UpdateRoleDialogComponent,
   ],
   imports: [
     CommonModule,

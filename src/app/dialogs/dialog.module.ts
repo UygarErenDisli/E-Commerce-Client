@@ -20,6 +20,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompleteOrderDialogComponent } from './complete-order-dialog/complete-order-dialog.component';
+import { MenuActionsListDialogComponent } from './menu-actions-list-dialog/menu-actions-list-dialog.component';
+import { MatSortModule } from '@angular/material/sort';
+import { AddRoleToActionDialogComponent } from './add-role-to-action-dialog/add-role-to-action-dialog.component';
+
 @NgModule({
   declarations: [
     DeleteDialogComponent,
@@ -30,6 +34,8 @@ import { CompleteOrderDialogComponent } from './complete-order-dialog/complete-o
     DetailedOrderDialogComponent,
     CheckoutDialogComponent,
     CompleteOrderDialogComponent,
+    MenuActionsListDialogComponent,
+    AddRoleToActionDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +52,7 @@ import { CompleteOrderDialogComponent } from './complete-order-dialog/complete-o
     FormsModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatSortModule,
   ],
 })
 export class DialogModule {}

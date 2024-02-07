@@ -20,6 +20,7 @@ import { UserService } from '../../../services/common/models/user.service';
 import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 import { CreateUser } from '../../../contracts/user/create-user';
 import { CustomToastrService } from '../../../services/alerts/customtoastr.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,8 @@ export default class RegisterComponent
   constructor(
     spinner: NgxSpinnerService,
     private userService: UserService,
-    private toastr: CustomToastrService
+    private toastr: CustomToastrService,
+    private router: Router
   ) {
     super(spinner);
   }
@@ -80,10 +82,14 @@ export default class RegisterComponent
 
     if (result.succeeded) {
       this.hideSpinner(SpinnerType.BallSpin);
-      this.toastr.message(result.message ?? 'Successfuly Created', 'Success', {
+      this.toastr.message('Registered Successfully', 'Success', {
         messageType: ToastrMessageType.Success,
         position: ToastrPosition.TopRight,
       });
+
+      setTimeout(() => {
+        this.router.navigate(['login']);
+      }, 1000);
     } else {
       this.hideSpinner(SpinnerType.BallSpin);
       this.toastr.message(result.message!, 'Error', {

@@ -62,7 +62,14 @@
           src="../../../../../assets/detail-icon.png"
           width="25px"
           height="25px"
-          (click)="addRole()"
+          (click)="
+            addRole(
+              element.actionCode,
+              element.actionType,
+              element.httpType,
+              element.definition
+            )
+          "
         />
       </td>
     </ng-container>
@@ -73,5 +80,4 @@
 </div>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Back</button>
-  <button mat-button mat-dialog-close>Save</button>
 </mat-dialog-actions>

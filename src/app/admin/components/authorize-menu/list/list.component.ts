@@ -60,10 +60,10 @@ export class ListComponent extends SpinnerComponent {
     this.dataSource.sort = this.sort;
   }
 
-  getActions(actions: Action[]) {
+  getActions(menuName: string, actions: Action[]) {
     this.dialogSerivce.openDialog({
       component: MenuActionsListDialogComponent,
-      data: actions,
+      data: { actions, menuName },
       options: {
         width: '1440px',
       },

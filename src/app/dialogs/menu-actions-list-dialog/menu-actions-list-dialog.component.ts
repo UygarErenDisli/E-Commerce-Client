@@ -11,10 +11,9 @@ import { Action } from '../../contracts/application/menu';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { DialogService } from '../../services/common/dialog.service';
-import {
-  AddRoleToActionDialogComponent,
-  AddRoleToActionDialogState,
-} from '../add-role-to-action-dialog/add-role-to-action-dialog.component';
+import { AddRoleToActionDialogComponent } from '../add-role-to-action-dialog/add-role-to-action-dialog.component';
+import { AddRoleToEndpoint } from '../../entities/endpoint/add-role-to-endpoint';
+import { ListEndpoints } from '../../entities/endpoint/list-endpoint';
 
 @Component({
   selector: 'app-menu-actions-list-dialog',
@@ -38,20 +37,34 @@ export class MenuActionsListDialogComponent
   constructor(
     dialogRef: MatDialogRef<MenuActionsListDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: MenuActionsListDialogsState | Action[],
+    public data: MenuActionsListDialogsState | ListEndpoints,
     private dialogService: DialogService
   ) {
     super(dialogRef);
   }
   ngAfterViewInit(): void {
-    this.dataSource = new MatTableDataSource<Action>(this.data as Action[]);
+    this.dataSource = new MatTableDataSource<Action>(
+      (this.data as ListEndpoints).actions
+    );
     this.dataSource.sort = this.sort;
   }
 
-  addRole() {
+  addRole(
+    actionCode: string,
+    actionType: string,
+    httpType: string,
+    definition: string
+  ) {
+    const addRoleToEndpoint = new AddRoleToEndpoint(
+      (this.data as ListEndpoints).menuName,
+      actionCode,
+      actionType,
+      httpType,
+      definition
+    );
     this.dialogService.openDialog({
       component: AddRoleToActionDialogComponent,
-      data: AddRoleToActionDialogState.Yes,
+      data: addRoleToEndpoint,
       options: {
         width: '970px',
       },

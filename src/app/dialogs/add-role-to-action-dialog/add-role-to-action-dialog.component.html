@@ -1,9 +1,33 @@
-<h1 mat-dialog-title>Warning</h1>
+<div>
+  <h2 mat-dialog-title class="dialog-title">Menu Name : {{ menuName }}</h2>
+  <h2 mat-dialog-title>Definition : {{ definition }}</h2>
+</div>
 <div mat-dialog-content>
-  <p>Do You want To Delete This?</p>
-  <p>You can't Undo this Action!</p>
+  <mat-selection-list
+    #roles
+    matBadge=" {{ roles.selectedOptions.selected.length }}/{{
+      allRoles?.totalCount
+    }}"
+    matBadgeOverlap="false"
+  >
+    <span matListItemTitle>Please select roles that you want to assign</span>
+    @for (role of allRoles?.roles; track role) {
+    <mat-list-option
+      [value]="role"
+      [selected]="this.assignedRoleIds.indexOf(role.id)! > -1 ? true : false"
+      >{{ role.name }}</mat-list-option
+    >
+    }
+  </mat-selection-list>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="close()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Yes</button>
+  <button mat-button (click)="close()">Cancel</button>
+  <button
+    mat-button
+    [mat-dialog-close]="data"
+    (click)="assignRole(roles)"
+    cdkFocusInitial
+  >
+    Save
+  </button>
 </div>

@@ -25,6 +25,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { AddRoleToActionDialogComponent } from './add-role-to-action-dialog/add-role-to-action-dialog.component';
 import { AddRoleDialogComponent } from './add-role-dialog/add-role-dialog.component';
 import { UpdateRoleDialogComponent } from './update-role-dialog/update-role-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { UpdateRoleDialogComponent } from './update-role-dialog/update-role-dial
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatSortModule,
+    MatSlideToggleModule,
+    MatBadgeModule,
   ],
 })
 export class DialogModule {}

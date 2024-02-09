@@ -56,6 +56,9 @@ export class SelectProductImageDialogComponent
       this.data.productId,
       () => {
         this.spinner.hide(SpinnerType.BallScaleMultiple);
+      },
+      (error) => {
+        this.spinner.hide(SpinnerType.BallScaleMultiple);
       }
     );
   }

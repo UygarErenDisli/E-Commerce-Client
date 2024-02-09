@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './admin/layout/layout.component';
 import { DashboardComponent } from './admin/components/dashboard/dashboard.component';
-import { HomeComponent } from './ui/components/home/home.component';
 import { authGuard } from './guards/common/auth.guard';
 
 const routes: Routes = [
@@ -54,12 +53,24 @@ const routes: Routes = [
 
         canActivate: [authGuard],
       },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./admin/components/users/users.module').then(
+            (module) => module.UsersModule
+          ),
+
+        canActivate: [authGuard],
+      },
     ],
     canActivate: [authGuard],
   },
   {
     path: '',
-    component: HomeComponent,
+    loadChildren: () =>
+      import('./ui/components/products/products.module').then(
+        (module) => module.ProductsModule
+      ),
   },
   {
     path: 'products',

@@ -81,22 +81,28 @@ export class ProductService {
     successCallBack?: () => void,
     errorCallBack?: (errorMessage: string) => void
   ) {
-    this.httpClint
-      .put(
-        {
-          controller: 'products',
-        },
-        updateProduct
-      )
-      .subscribe({
-        error: (errorMessage: HttpErrorResponse) => {
-          errorCallBack?.(errorMessage.message);
-        },
-        complete: () => successCallBack?.(),
-      });
+    const observable = this.httpClint.put(
+      {
+        controller: 'products',
+      },
+      updateProduct
+    );
+
+    const promise = firstValueFrom(observable);
+    promise
+      .then((_) => {
+        successCallBack?.();
+      })
+      .catch((error) => errorCallBack?.(error));
+
+    await promise;
   }
 
-  async readImages(id: string, successCallBack?: () => void) {
+  async readImages(
+    id: string,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: string) => void
+  ) {
     const imagesObservable: Observable<ListProductImage[]> = this.httpClint.get<
       ListProductImage[]
     >(
@@ -106,9 +112,15 @@ export class ProductService {
       },
       id
     );
-    const images = await firstValueFrom(imagesObservable);
-    successCallBack?.();
-    return images;
+    const promiseImages = firstValueFrom(imagesObservable);
+    promiseImages
+      .then((_) => {
+        successCallBack?.();
+      })
+      .catch((error) => {
+        errorCallBack?.(error);
+      });
+    return await promiseImages;
   }
 
   async deleteImage(

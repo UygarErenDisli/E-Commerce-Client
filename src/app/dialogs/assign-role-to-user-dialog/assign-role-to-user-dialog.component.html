@@ -1,6 +1,8 @@
 <div>
-  <h2 mat-dialog-title class="dialog-title">Menu Name : {{ menuName }}</h2>
-  <h2 mat-dialog-title>Definition : {{ definition }}</h2>
+  <h2 mat-dialog-title class="dialog-title">
+    Name Surname : {{ nameSurname }}
+  </h2>
+  <h2 mat-dialog-title>User Name : {{ userName }}</h2>
 </div>
 <div mat-dialog-content>
   <mat-selection-list
@@ -14,7 +16,7 @@
     @for (role of allRoles?.roles; track role) {
     <mat-list-option
       [value]="role"
-      [selected]="this.assignedRoleIds.indexOf(role.id!)! > -1 ? true : false"
+      [selected]="this.assignedRoles.indexOf(role.name)! > -1 ? true : false"
       >{{ role.name }}</mat-list-option
     >
     }

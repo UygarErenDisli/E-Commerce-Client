@@ -40,7 +40,6 @@ export class UpdateProductDialogComponent
           this.spinner.hide(SpinnerType.BallCLipRotate);
         }
       );
-      debugger;
     } catch (error) {
       this.spinner.hide(SpinnerType.BallCLipRotate);
       this.toastr.message(
@@ -74,10 +73,14 @@ export class UpdateProductDialogComponent
       },
       (errorMessage: string) => {
         this.spinner.hide(SpinnerType.BallSpin);
-        this.toastr.message(errorMessage, 'Error', {
-          messageType: ToastrMessageType.Success,
-          position: ToastrPosition.TopRight,
-        });
+        this.toastr.message(
+          'An Error Occured While Updating Product',
+          'Error',
+          {
+            messageType: ToastrMessageType.Error,
+            position: ToastrPosition.TopRight,
+          }
+        );
       }
     );
   }

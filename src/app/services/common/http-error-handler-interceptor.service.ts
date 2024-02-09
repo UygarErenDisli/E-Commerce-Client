@@ -15,6 +15,8 @@ import {
   ToastrPosition,
 } from '../alerts/customtoastr.service';
 import { UserAuthService } from './user-auth.service';
+import { SpinnerComponent } from '../../base/spinner/spinner.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 export const MaxReties = 3;
 export const DelayMs = 2000;
@@ -22,12 +24,18 @@ export const DelayMs = 2000;
 @Injectable({
   providedIn: 'root',
 })
-export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
+export class HttpErrorHandlerInterceptorService
+  extends SpinnerComponent
+  implements HttpInterceptor
+{
   constructor(
+    spinner: NgxSpinnerService,
     private router: Router,
     private toastr: CustomToastrService,
     private userAuthService: UserAuthService
-  ) {}
+  ) {
+    super(spinner);
+  }
 
   intercept(
     req: HttpRequest<any>,
@@ -61,9 +69,17 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
           case HttpStatusCode.Unauthorized:
             this.userAuthService
               .refreshTokenLogin(localStorage.getItem('refreshToken') as string)
-              .then((data) => {})
+              .then((data) => {
+                this.toastr.message(
+                  'You are not authorized to perform this action!',
+                  'Unauthorized!',
+                  {
+                    messageType: ToastrMessageType.Warning,
+                    position: ToastrPosition.TopCenter,
+                  }
+                );
+              })
               .catch((error) => {
-                this.router.navigate(['login']);
                 this.toastr.message(
                   'You are not authorized to perform this action!',
                   'Unauthorized!',

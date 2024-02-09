@@ -22,6 +22,7 @@ import {
   DeleteState,
 } from '../../dialogs/delete-dialog/delete-dialog.component';
 import { DialogService } from '../../services/common/dialog.service';
+import { firstValueFrom } from 'rxjs';
 
 @Directive({
   selector: '[appDelete]',
@@ -52,45 +53,45 @@ export class DeleteDirective {
     this.dialogService.openDialog({
       component: DeleteDialogComponent,
       data: DeleteState.Yes,
-      afterClosed: () => {
+      afterClosed: async () => {
         this.spinner.show(SpinnerType.BallSpin);
-        this.httpClient
-          .delete(
-            {
-              controller: this.controller,
-            },
-            this.id
-          )
-          .subscribe({
-            complete: () => {
-              const td: HTMLTableCellElement = this.element.nativeElement;
-              $(td.parentElement!).fadeOut(1000, () => {
-                this.callBack.emit();
-                this.spinner.hide(SpinnerType.BallSpin);
-                this.alertService.message(
-                  `${this.itemName} Deleted Successfully`,
-                  'Success',
-                  {
-                    messageType: ToastrMessageType.Success,
-                    position: ToastrPosition.TopRight,
-                  }
-                );
-              });
-            },
-            error: (errorResponse: HttpErrorResponse) => {
-              const td: HTMLTableCellElement = this.element.nativeElement;
+        const observable = this.httpClient.delete(
+          {
+            controller: this.controller,
+          },
+          this.id
+        );
+        const promise = firstValueFrom(observable);
+        promise
+          .then((_) => {
+            const td: HTMLTableCellElement = this.element.nativeElement;
+            $(td.parentElement!).fadeOut(1000, () => {
+              this.callBack.emit();
               this.spinner.hide(SpinnerType.BallSpin);
-              $(td.parentElement!).fadeIn(300);
               this.alertService.message(
-                'An unexpected error was encountered while deleting',
-                'Error',
+                `${this.itemName} Deleted Successfully`,
+                'Success',
                 {
-                  messageType: ToastrMessageType.Error,
+                  messageType: ToastrMessageType.Success,
                   position: ToastrPosition.TopRight,
                 }
               );
-            },
+            });
+          })
+          .catch((error: any) => {
+            const td: HTMLTableCellElement = this.element.nativeElement;
+            this.spinner.hide(SpinnerType.BallSpin);
+            $(td.parentElement!).fadeIn(300);
+            this.alertService.message(
+              'An unexpected error was encountered while deleting',
+              'Error',
+              {
+                messageType: ToastrMessageType.Error,
+                position: ToastrPosition.TopRight,
+              }
+            );
           });
+        await promise;
       },
     });
   }

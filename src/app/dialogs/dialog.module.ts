@@ -27,6 +27,7 @@ import { AddRoleDialogComponent } from './add-role-dialog/add-role-dialog.compon
 import { UpdateRoleDialogComponent } from './update-role-dialog/update-role-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
+import { AssignRoleToUserDialogComponent } from './assign-role-to-user-dialog/assign-role-to-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     AddRoleToActionDialogComponent,
     AddRoleDialogComponent,
     UpdateRoleDialogComponent,
+    AssignRoleToUserDialogComponent,
   ],
   imports: [
     CommonModule,

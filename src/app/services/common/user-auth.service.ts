@@ -58,7 +58,8 @@ export class UserAuthService {
 
   async refreshTokenLogin(
     refreshToken: string,
-    callBackFunction?: () => void
+    callBackFunction?: () => void,
+    errorCallBack?: (error: any) => void
   ): Promise<any> {
     const observable: Observable<LoginUserResponse> = this.httpClient.post<
       any | LoginUserResponse
@@ -70,10 +71,14 @@ export class UserAuthService {
       { refreshToken: refreshToken }
     );
     const response = (await firstValueFrom(observable)) as LoginUserResponse;
-    if (response) {
-      localStorage.setItem('accessToken', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
+    try {
+      if (response) {
+        localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
+      }
+      callBackFunction?.();
+    } catch (error) {
+      errorCallBack?.(error);
     }
-    callBackFunction?.();
   }
 }

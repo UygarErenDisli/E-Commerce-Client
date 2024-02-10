@@ -1,3 +1,4 @@
+import { AuthService } from './../../../../services/common/auth.service';
 import { ToastrPosition } from './../../../../services/alerts/customtoastr.service';
 import {
   ListProduct,
@@ -8,7 +9,6 @@ import { ProductService } from '../../../../services/common/models/product.servi
 import { FilesService } from '../../../../services/common/files.service';
 import { ActivatedRoute } from '@angular/router';
 import { BaseUrl } from '../../../../contracts/files/base-url';
-import { param } from 'jquery';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from '../../../../base/spinner/spinner.component';
 import { BasketService } from '../../../../services/common/models/basket.service';
@@ -31,14 +31,14 @@ export class ListComponent implements OnInit {
   totalProductCount?: number;
   totalPageCount?: number;
   pageList: number[] = [];
-
   constructor(
     private productService: ProductService,
     private filesService: FilesService,
     private basketServive: BasketService,
     private activatedRouter: ActivatedRoute,
     private spinner: NgxSpinnerService,
-    private toastr: CustomToastrService
+    private toastr: CustomToastrService,
+    public authService: AuthService
   ) {}
 
   async ngOnInit() {
@@ -138,11 +138,27 @@ export class ListComponent implements OnInit {
 
   async addItemToBasket(productId: string) {
     this.spinner.show(SpinnerType.BallSpin);
-    await this.basketServive.addItemToBasket(productId, 1);
-    this.toastr.message('Product Added To Basket', 'Product Added', {
-      messageType: ToastrMessageType.Success,
-      position: ToastrPosition.TopRight,
-    });
-    this.spinner.hide(SpinnerType.BallSpin);
+    await this.basketServive.addItemToBasket(
+      productId,
+      1,
+      () => {
+        this.toastr.message('Product Added To Basket', 'Product Added', {
+          messageType: ToastrMessageType.Success,
+          position: ToastrPosition.TopRight,
+        });
+        this.spinner.hide(SpinnerType.BallSpin);
+      },
+      (error) => {
+        this.toastr.message(
+          'An unexpected error was encountered while adding the selected product to the cart.',
+          'Error',
+          {
+            messageType: ToastrMessageType.Error,
+            position: ToastrPosition.TopRight,
+          }
+        );
+        this.spinner.hide(SpinnerType.BallSpin);
+      }
+    );
   }
 }

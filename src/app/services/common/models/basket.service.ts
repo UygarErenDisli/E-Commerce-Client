@@ -1,4 +1,4 @@
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom, throwError } from 'rxjs';
 import { ListBasketItems } from '../../../contracts/basket/list-basket-items';
 import { HttpClientService } from './../httpclient.service';
 import { Injectable } from '@angular/core';
@@ -22,7 +22,8 @@ export class BasketService {
   async addItemToBasket(
     productId: string,
     quantity: number,
-    callBack?: () => void
+    callBack?: () => void,
+    errorCallBack?: (error: any) => void
   ) {
     const observable = this.httpClient.post(
       {
@@ -31,8 +32,11 @@ export class BasketService {
       { productId: productId, quantity: quantity }
     );
 
-    await firstValueFrom(observable);
-    callBack?.();
+    const promise = firstValueFrom(observable);
+    promise
+      .then(() => callBack?.())
+      .catch((errorMessage) => errorCallBack?.(errorMessage));
+    await promise;
   }
 
   async updateItemQuantity(

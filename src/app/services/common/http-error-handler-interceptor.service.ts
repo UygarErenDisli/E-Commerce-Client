@@ -42,34 +42,12 @@ export class HttpErrorHandlerInterceptorService
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      retry({
-        count: MaxReties,
-        delay: (
-          retryError: HttpErrorResponse,
-          retryAttempt: number
-        ): Observable<number> => {
-          if (retryError.status !== 500 || retryAttempt + 1 > MaxReties) {
-            return throwError(() => retryError);
-          }
-          this.toastr.message(
-            `Retry Attempt ${retryAttempt}: retrying in ${
-              (retryAttempt * DelayMs) / 1000
-            } seconds`,
-            'Unable To Connect to Server!',
-            {
-              messageType: ToastrMessageType.Warning,
-              position: ToastrPosition.TopCenter,
-            }
-          );
-          return timer(retryAttempt * DelayMs);
-        },
-      }),
       catchError((error) => {
         switch (error.status) {
           case HttpStatusCode.Unauthorized:
             this.userAuthService
               .refreshTokenLogin(localStorage.getItem('refreshToken') as string)
-              .then((data) => {
+              .then((_data) => {
                 this.toastr.message(
                   'You are not authorized to perform this action!',
                   'Unauthorized!',
@@ -79,7 +57,7 @@ export class HttpErrorHandlerInterceptorService
                   }
                 );
               })
-              .catch((error) => {
+              .catch((_error) => {
                 this.toastr.message(
                   'You are not authorized to perform this action!',
                   'Unauthorized!',

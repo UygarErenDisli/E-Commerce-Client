@@ -12,11 +12,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { DeleteDirective } from '../../../directives/admin/delete.directive';
 import { DialogModule } from '../../../dialogs/dialog.module';
 import { FileUploadModule } from '../../../services/common/file-upload/file-upload.module';
 import { MatSortModule } from '@angular/material/sort';
 import { DeleteDirectiveModule } from '../../../directives/admin/delete-directive.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [ProductsComponent, CreateProductComponent, ListComponent],
   imports: [
@@ -32,6 +33,8 @@ import { DeleteDirectiveModule } from '../../../directives/admin/delete-directiv
     FileUploadModule,
     MatSortModule,
     DeleteDirectiveModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
 })
 export class ProductsModule {}

@@ -1,21 +1,58 @@
-<mat-form-field appearance="fill" class="create-form">
-  <mat-label>Name</mat-label>
-  <input matInput #txtName />
-</mat-form-field>
-<mat-form-field appearance="fill" class="create-form">
-  <mat-label>Stock</mat-label>
-  <input matInput type="number" min="0" value="0" #txtStock />
-</mat-form-field>
-<mat-form-field appearance="fill" class="create-form">
-  <mat-label>Price</mat-label>
-  <input matInput type="number" min="0" value="0" #txtPrice />
-</mat-form-field>
+<form [formGroup]="productFromGroup">
+  <div class="product-form-group">
+    <div>
+      <mat-form-field appearance="fill" class="product-form-group-field">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          #txtName
+          formControlName="name"
+          required
+          placeholder="Product Name"
+        />
+        <mat-hint style="color: lightgrey"
+          >Max 60 characters : {{ txtName.value.length }}/60</mat-hint
+        >
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill" class="product-form-group-field">
+        <mat-label>Stock</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          value="0"
+          #txtStock
+          formControlName="stock"
+          placeholder="Product Stock"
+          required
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="fill" class="product-form-group-field">
+        <mat-label>Price</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          value="0"
+          #txtPrice
+          formControlName="price"
+          placeholder="Product Price"
+          required
+        />
+      </mat-form-field>
+      <br />
+    </div>
+  </div>
 
-<button
-  mat-raised-button
-  class="btn"
-  color="primary"
-  (click)="create(txtName, txtStock, txtPrice)"
->
-  Create Product
-</button>
+  <button
+    mat-raised-button
+    class="btn"
+    color="primary"
+    (click)="create(txtName.value, txtStock.value, txtPrice.value)"
+    [disabled]="!productFromGroup.valid"
+  >
+    Create Product
+  </button>
+</form>

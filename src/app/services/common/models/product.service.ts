@@ -13,32 +13,24 @@ import { UpdateProduct } from '../../../contracts/product/update-product';
 export class ProductService {
   constructor(private httpClint: HttpClientService) {}
 
-  create(
+  async create(
     createProduct: CreateProduct,
     successCallBack?: () => void,
     errorCallBack?: (errorMessage: string) => void
   ) {
-    this.httpClint
-      .post(
-        {
-          controller: 'products',
-        },
-        createProduct
-      )
-      .subscribe({
-        error: (errorResponse: HttpErrorResponse) => {
-          const errors: Array<{ key: string; value: Array<string> }> =
-            errorResponse.error;
-          let output = '';
-          errors.forEach((error) => {
-            error.value.forEach((errorMessage) => {
-              output += `${errorMessage}\n`;
-            });
-          });
-          errorCallBack?.(output);
-        },
-        complete: () => successCallBack?.(),
+    const observable: Observable<any> = this.httpClint.post(
+      {
+        controller: 'products',
+      },
+      createProduct
+    );
+    const promise = firstValueFrom(observable);
+    promise
+      .then(() => successCallBack?.())
+      .catch((errorResponse) => {
+        errorCallBack?.(errorResponse);
       });
+    await promise;
   }
 
   async read(

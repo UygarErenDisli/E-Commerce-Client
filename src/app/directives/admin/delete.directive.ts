@@ -42,8 +42,8 @@ export class DeleteDirective {
     _renderer.appendChild(element.nativeElement, img);
   }
 
-  @Input() id: string | undefined;
-  @Input() controller: string | undefined;
+  @Input() id!: string;
+  @Input() controller!: string;
   @Input() itemName: string = '';
 
   @Output() callBack: EventEmitter<any> = new EventEmitter();

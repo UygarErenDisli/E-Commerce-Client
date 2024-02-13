@@ -1,4 +1,4 @@
-import { ListBasketItems } from '../contracts/basket/list-basket-items';
+import { ListBasketItems } from '../../contracts/basket/list-basket-items';
 
 export class CheckoutDetails {
   basketItems!: ListBasketItems[];

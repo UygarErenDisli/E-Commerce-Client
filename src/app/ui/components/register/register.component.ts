@@ -15,7 +15,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { User } from '../../../entities/user';
+import { User } from '../../../entities/user/user';
 import { UserService } from '../../../services/common/models/user.service';
 import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 import { CreateUser } from '../../../contracts/user/create-user';

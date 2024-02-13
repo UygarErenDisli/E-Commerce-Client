@@ -3,7 +3,7 @@ import { SocialUser } from '@abacritt/angularx-social-login';
 import { Injectable } from '@angular/core';
 import { Observable, firstValueFrom } from 'rxjs';
 import { LoginUserResponse } from '../../contracts/user/login-user-response';
-import { LoginUser } from '../../entities/login-user';
+import { LoginUser } from '../../entities/user/login-user';
 import { HttpClientService } from './httpclient.service';
 
 @Injectable({

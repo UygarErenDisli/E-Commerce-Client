@@ -1,4 +1,4 @@
-import { User } from './../../../entities/user';
+import { User } from '../../../entities/user/user';
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../httpclient.service';
 import { CreateUser } from '../../../contracts/user/create-user';
@@ -79,14 +79,20 @@ export class UserService {
     await promise;
   }
 
-  async getUserNotifications(): Promise<UserNotification[]> {
+  async getUserNotifications(
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: any) => void
+  ): Promise<UserNotification[] | []> {
     const observable: Observable<UserNotification[]> = this.httpClient.get<
       UserNotification[]
     >({
-      controller: 'identity',
+      controller: 'notifications',
     });
-
-    return await firstValueFrom(observable);
+    const promise = firstValueFrom(observable);
+    promise
+      .then((_) => successCallBack?.())
+      .catch((error) => errorCallBack?.(error));
+    return await promise;
   }
 
   async createUser(user: User): Promise<CreateUser> {
@@ -102,14 +108,21 @@ export class UserService {
     return (await firstValueFrom(observableResponse)) as CreateUser;
   }
 
-  async deleteUserNotification(notificationId: string) {
+  async deleteUserNotification(
+    notificationId: string,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: any) => void
+  ): Promise<void> {
     const observable = this.httpClient.delete(
       {
-        controller: 'identity',
+        controller: 'notifications',
       },
       notificationId
     );
-
-    return await firstValueFrom(observable);
+    const promise = firstValueFrom(observable);
+    promise
+      .then((_) => successCallBack?.())
+      .catch((error) => errorCallBack?.(error));
+    await promise;
   }
 }

@@ -1,4 +1,4 @@
-import { CreateOrderAddress } from './../../entities/create-order-address';
+import { CreateOrderAddress } from '../../entities/order/create-order-address';
 import { Component, Inject, OnInit } from '@angular/core';
 import { BaseDialog } from '../base/base-dialog';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ import {
   ToastrMessageType,
   ToastrPosition,
 } from '../../services/alerts/customtoastr.service';
-import { CheckoutDetails } from '../../entities/order-checkout-details';
+import { CheckoutDetails } from '../../entities/order/order-checkout-details';
 
 declare var $: any;
 

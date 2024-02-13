@@ -29,9 +29,13 @@
           class="btn btn-success"
           >Add To Basket</a
         >
-        <a *ngIf="!authService.isAuthenticated" class="btn btn-warning"
-          >Please Login in first!</a
+        <button
+          *ngIf="!authService.isAuthenticated"
+          disabled="true"
+          class="btn btn-warning"
         >
+          Please Login in first!
+        </button>
         <span
           class="d-inline-block"
           tabindex="0"

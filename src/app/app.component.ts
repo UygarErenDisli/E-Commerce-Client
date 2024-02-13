@@ -25,7 +25,7 @@ declare var $: any;
 })
 export class AppComponent {
   userNotifications?: UserNotification[];
-
+  isLoading: boolean = true;
   @ViewChild(DynamicComponentLoaderDirective, { static: true })
   dynamicComponentLoaderDirective!: DynamicComponentLoaderDirective;
 
@@ -62,11 +62,23 @@ export class AppComponent {
   }
 
   async getNotifications() {
-    this.spinner.show(SpinnerType.BallSpin);
-    const userId = localStorage.getItem('userId');
-    let response = await this.userService.getUserNotifications();
+    let response = await this.userService.getUserNotifications(
+      () => {
+        this.isLoading = false;
+      },
+      () => {
+        this.isLoading = false;
+        this.toastr.message(
+          'An unexpected error was encountered while getting notifications',
+          'Error',
+          {
+            messageType: ToastrMessageType.Error,
+            position: ToastrPosition.TopRight,
+          }
+        );
+      }
+    );
     this.userNotifications = response.reverse();
-    this.spinner.hide(SpinnerType.BallSpin);
   }
 
   async deleteNotification(notificationId: string) {

@@ -96,4 +96,29 @@ export class OrderService {
 
     await promise;
   }
+  async cancelOrder(
+    id: string,
+    reason: string,
+    successCallBack?: () => void,
+    errorCallBack?: (errorMessage: any) => void
+  ): Promise<void> {
+    const observable = this.httClient.put(
+      {
+        controller: 'orders',
+        action: 'CancelOrder',
+      },
+      {
+        id,
+        reason,
+      }
+    );
+    const promise = firstValueFrom(observable);
+    promise
+      .then((_) => {
+        successCallBack?.();
+      })
+      .catch((error) => errorCallBack?.(error));
+
+    await promise;
+  }
 }

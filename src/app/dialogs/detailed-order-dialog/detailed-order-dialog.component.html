@@ -1,10 +1,10 @@
 <div>
   <div class="left-div">
-    <h2 mat-dialog-title>Order No: {{ detailedOrder.orderCode }}</h2>
+    <h2 mat-dialog-title>Order No: {{ detailedOrder?.orderCode }}</h2>
     <mat-list>
-      <mat-list-item>User Name: {{ detailedOrder.userName }}</mat-list-item>
+      <mat-list-item>User Name: {{ detailedOrder?.userName }}</mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item>User Email: {{ detailedOrder.userEmail }}</mat-list-item>
+      <mat-list-item>User Email: {{ detailedOrder?.userEmail }}</mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item>Order Date: {{ formatedOrderDate }}</mat-list-item>
       <mat-divider></mat-divider>
@@ -12,25 +12,35 @@
       <mat-divider></mat-divider>
       <mat-list-item class="description-list-wrapping" [lines]="3">
         <span matListItemTitle>Order Description:</span>
-        {{ detailedOrder.description }}
+        {{ detailedOrder?.description }}
+      </mat-list-item>
+      <mat-list-item
+        class="description-list-wrapping"
+        *ngIf="detailedOrder?.isCanceled"
+        [lines]="3"
+      >
+        <span matListItemTitle>Reason for Cancellation:</span>
+        {{ detailedOrder?.reasonforCancellation }}
       </mat-list-item>
     </mat-list>
   </div>
   <div class="right-div">
     <h2 mat-dialog-title>Order Address</h2>
     <mat-list>
-      <mat-list-item>Street: {{ detailedOrder.address.street }}</mat-list-item>
+      <mat-list-item
+        >Street: {{ detailedOrder?.address?.street }}</mat-list-item
+      >
       <mat-divider></mat-divider>
-      <mat-list-item>City: {{ detailedOrder.address.city }}</mat-list-item>
+      <mat-list-item>City: {{ detailedOrder?.address?.city }}</mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item>State: {{ detailedOrder.address.state }}</mat-list-item>
+      <mat-list-item>State: {{ detailedOrder?.address?.state }}</mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item
-        >Country: {{ detailedOrder.address.country }}</mat-list-item
+        >Country: {{ detailedOrder?.address?.country }}</mat-list-item
       >
       <mat-divider></mat-divider>
       <mat-list-item
-        >ZipCode: {{ detailedOrder.address.zipCode }}</mat-list-item
+        >ZipCode: {{ detailedOrder?.address?.zipCode }}</mat-list-item
       >
       <mat-divider></mat-divider>
     </mat-list>
@@ -107,7 +117,7 @@
   <div class="sub-total-div">
     <div>
       <h2 class="sub-total-title">SubTotal:</h2>
-      <h2 class="sub-total-h2">{{ detailedOrder.totalPrice | currency }}</h2>
+      <h2 class="sub-total-h2">{{ detailedOrder?.totalPrice | currency }}</h2>
     </div>
     <mat-divider></mat-divider>
     <div class="sub-total-div">
@@ -119,7 +129,7 @@
       </div>
       <div>
         <h2 class="sub-total-title">Total incl.tax:</h2>
-        <h2 class="sub-total-h2">{{ detailedOrder.totalPrice | currency }}</h2>
+        <h2 class="sub-total-h2">{{ detailedOrder?.totalPrice | currency }}</h2>
       </div>
     </div>
   </div>
@@ -132,16 +142,24 @@
     mat-button
     mat-dialog-close
     (click)="completeOrder()"
-    *ngIf="!detailedOrder.isCompleted"
+    *ngIf="!detailedOrder?.isCompleted && !detailedOrder?.isCanceled"
   >
     Mark As Complete
   </button>
   <button
+    *ngIf="detailedOrder?.isCompleted && !detailedOrder?.isCanceled"
     mat-button
     mat-dialog-close
-    [disabled]="detailedOrder.isCompleted"
-    *ngIf="detailedOrder.isCompleted"
+    disabled="true"
   >
     Already Marked as Completed
+  </button>
+  <button
+    *ngIf="detailedOrder?.isCanceled && !detailedOrder?.isCompleted"
+    mat-button
+    mat-dialog-close
+    disabled="true"
+  >
+    Order Canceled
   </button>
 </mat-dialog-actions>

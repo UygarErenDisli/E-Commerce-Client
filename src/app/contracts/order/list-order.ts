@@ -11,4 +11,5 @@ export class ListOrder {
   totalPrice!: number;
   createdDate!: Date;
   isCompleted!: boolean;
+  isCanceled!: boolean;
 }

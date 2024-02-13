@@ -28,6 +28,7 @@ import { UpdateRoleDialogComponent } from './update-role-dialog/update-role-dial
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
 import { AssignRoleToUserDialogComponent } from './assign-role-to-user-dialog/assign-role-to-user-dialog.component';
+import { CancelOrderDialogComponent } from './cancel-order-dialog/cancel-order-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { AssignRoleToUserDialogComponent } from './assign-role-to-user-dialog/as
     AddRoleDialogComponent,
     UpdateRoleDialogComponent,
     AssignRoleToUserDialogComponent,
+    CancelOrderDialogComponent,
   ],
   imports: [
     CommonModule,

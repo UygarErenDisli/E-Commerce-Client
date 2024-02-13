@@ -14,6 +14,8 @@ import { MatTableModule } from '@angular/material/table';
 import { FileUploadModule } from '../../../services/common/file-upload/file-upload.module';
 import { DeleteDirectiveModule } from '../../../directives/admin/delete-directive.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @NgModule({
   declarations: [OrdersComponent, ListComponent],
   imports: [
@@ -30,6 +32,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatSortModule,
     DeleteDirectiveModule,
     MatToolbarModule,
+    MatTooltipModule,
   ],
 })
 export class OrdersModule {}

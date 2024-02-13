@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Order Cancellation Panel</h1>
+<div mat-dialog-content>
+  <p style="text-align: center">Order Details</p>
+  <p>Order Number: {{ currentOrder.orderCode }}</p>
+  <p>User Name: {{ currentOrder.username }}</p>
+  <p>User Email: {{ currentOrder.userEmail }}</p>
+  <p>Order Date: {{ currentOrder.createdDate }}</p>
+  <p>Order Total: {{ currentOrder.totalPrice | currency }}</p>
+  <p>Reason for Cancellation (Required):</p>
+  <mat-form-field style="width: 100%">
+    <mat-label>Reason</mat-label>
+    <textarea
+      matInput
+      #txtReasonArea
+      required
+      placeholder="Brief reason for cancellation, e.g., out of stock, payment issue, etc."
+    ></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Close</button>
+  <button
+    mat-button
+    [mat-dialog-close]="data"
+    (click)="cancelOrder(txtReasonArea.value)"
+    cdkFocusInitial
+  >
+    Confirm
+  </button>
+</div>

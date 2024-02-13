@@ -9,6 +9,8 @@ export class DetailedOrder {
   basketItems!: OrderBasketItems[];
   createdDate!: Date;
   isCompleted!: boolean;
+  isCanceled!: boolean;
+  reasonforCancellation!: string;
 }
 
 export class OrderAddress {

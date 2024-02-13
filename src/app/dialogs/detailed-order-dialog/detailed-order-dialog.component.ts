@@ -42,13 +42,13 @@ export class DetailedOrderDialogComponent
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  detailedOrder!: DetailedOrder;
+  detailedOrder?: DetailedOrder;
   formatedOrderDate!: string;
   formatedOrderTime!: string;
 
   constructor(
     dialogRef: MatDialogRef<DetailedOrderDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DetailedOrderDialogState | string,
+    @Inject(MAT_DIALOG_DATA) public data: string,
     private orderService: OrderService,
     private spinner: NgxSpinnerService,
     private toastr: CustomToastrService,
@@ -81,7 +81,7 @@ export class DetailedOrderDialogComponent
     this.dataSource = new MatTableDataSource<OrderBasketItems>(
       detailedOrder?.basketItems
     );
-    this.paginator!.length = detailedOrder.basketItems.length;
+    this.paginator.length = detailedOrder.basketItems.length;
     this.dataSource.sort = this.sort;
   }
 
@@ -91,20 +91,20 @@ export class DetailedOrderDialogComponent
   }
 
   private formatOrderDate() {
-    const orderDate = this.detailedOrder.createdDate
+    const orderDate = this.detailedOrder?.createdDate
       .toString()
-      .substring(0, this.detailedOrder.createdDate.toString().indexOf('T'));
-    const orderDates = orderDate.split('-');
-    const orderTimes = this.detailedOrder.createdDate
+      .substring(0, this.detailedOrder?.createdDate.toString().indexOf('T'));
+    const orderDates = orderDate!.split('-');
+    const orderTimes = this.detailedOrder?.createdDate
       .toString()
       .substring(
-        this.detailedOrder.createdDate.toString().indexOf('T') + 1,
-        this.detailedOrder.createdDate.toString().indexOf('.')
+        this.detailedOrder?.createdDate.toString().indexOf('T') + 1,
+        this.detailedOrder?.createdDate.toString().indexOf('.')
       )
       .split(':');
 
     this.formatedOrderDate = `${orderDates[2]}/${orderDates[1]}/${orderDates[0]}`;
-    this.formatedOrderTime = `${orderTimes[0]}:${orderTimes[1]}`;
+    this.formatedOrderTime = `${orderTimes![0]}:${orderTimes![1]}`;
   }
 
   completeOrder() {

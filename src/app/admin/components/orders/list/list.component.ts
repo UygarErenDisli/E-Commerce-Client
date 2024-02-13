@@ -16,6 +16,11 @@ import { DialogService } from '../../../../services/common/dialog.service';
 import { OrderService } from '../../../../services/common/models/order.service';
 import { ListOrder, ListOrders } from '../../../../contracts/order/list-order';
 import { DetailedOrderDialogComponent } from '../../../../dialogs/detailed-order-dialog/detailed-order-dialog.component';
+import {
+  CancelOrderDialogComponent,
+  CancelOrderDialogState,
+} from '../../../../dialogs/cancel-order-dialog/cancel-order-dialog.component';
+import { CancelOrder } from '../../../../entities/order/cancel-order';
 
 @Component({
   selector: 'app-list',
@@ -31,7 +36,7 @@ export class ListComponent extends SpinnerComponent {
     'createdDate',
     'isCompleted',
     'detail',
-    'delete',
+    'cancelOrder',
   ];
   dataSource: MatTableDataSource<ListOrder> = new MatTableDataSource();
 
@@ -67,7 +72,6 @@ export class ListComponent extends SpinnerComponent {
       }
     );
     this.dataSource = new MatTableDataSource<ListOrder>(listOrdes?.orders);
-
     this.paginator!.length = listOrdes?.totalCount;
     this.dataSource.sort = this.sort;
   }
@@ -83,6 +87,30 @@ export class ListComponent extends SpinnerComponent {
       data: orderId,
       options: {
         width: '1440px',
+      },
+    });
+  }
+
+  openCancelOderDialog(
+    orderId: string,
+    orderCode: string,
+    userName: string,
+    userEmail: string,
+    totalPrice: number,
+    createdDate: Date
+  ) {
+    this.dialogSerivce.openDialog({
+      component: CancelOrderDialogComponent,
+      data: new CancelOrder(
+        orderId,
+        orderCode,
+        userName,
+        userEmail,
+        totalPrice,
+        createdDate
+      ),
+      afterClosed: async () => {
+        await this.getOrders();
       },
     });
   }

@@ -23,6 +23,13 @@ export class AuthService {
   get isAuthenticated(): boolean {
     return _isAuthenticated;
   }
+  get hasAccessToAdminDashboard(): boolean {
+    return _hasAccessToAdminDashboard;
+  }
+  set hasAccessToAdminDashboard(state: boolean) {
+    _hasAccessToAdminDashboard = state;
+  }
 }
 
 export let _isAuthenticated: boolean;
+export let _hasAccessToAdminDashboard: boolean;

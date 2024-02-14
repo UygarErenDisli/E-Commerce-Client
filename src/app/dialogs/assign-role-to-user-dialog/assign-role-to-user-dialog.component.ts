@@ -1,11 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectionList } from '@angular/material/list';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from '../../base/spinner/spinner.component';
 import { ListRoles } from '../../contracts/roles/list-role';
 import { Role } from '../../contracts/roles/role';
-import { AddRoleToEndpoint } from '../../entities/endpoint/add-role-to-endpoint';
 import {
   CustomToastrService,
   ToastrMessageType,
@@ -37,7 +36,8 @@ export class AssignRoleToUserDialogComponent
     private spinner: NgxSpinnerService,
     private toastr: CustomToastrService,
     private roleService: RoleService,
-    private userService: UserService
+    private userService: UserService,
+    private changeDetectionRef: ChangeDetectorRef
   ) {
     super(dialogRef);
   }
@@ -47,6 +47,7 @@ export class AssignRoleToUserDialogComponent
     this.assignedRoles = await this.userService.getRolesToUser(
       this.data.userId
     );
+    this.changeDetectionRef.detectChanges();
     this.spinner.hide(SpinnerType.BallCLipRotate);
   }
   async assignRole(roles: MatSelectionList) {

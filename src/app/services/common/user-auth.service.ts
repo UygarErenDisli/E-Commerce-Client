@@ -5,12 +5,16 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { LoginUserResponse } from '../../contracts/user/login-user-response';
 import { LoginUser } from '../../entities/user/login-user';
 import { HttpClientService } from './httpclient.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserAuthService {
-  constructor(private httpClient: HttpClientService) {}
+  constructor(
+    private httpClient: HttpClientService,
+    private authService: AuthService
+  ) {}
 
   async login(
     loginUser: Partial<LoginUser>,
@@ -33,6 +37,8 @@ export class UserAuthService {
     if (response) {
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
+      this.authService.hasAccessToAdminDashboard =
+        response.hasAccessToAdminDashboard;
     }
     callBackFunction?.();
   }

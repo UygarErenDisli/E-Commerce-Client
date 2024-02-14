@@ -59,8 +59,9 @@ export class LoginComponent extends SpinnerComponent {
       const returnUrl = params['returnUrl'];
       if (returnUrl) {
         this.router.navigateByUrl(returnUrl);
+      } else {
+        this.router.navigate(['']);
       }
-      this.router.navigate(['']);
     });
   }
 

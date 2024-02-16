@@ -79,7 +79,11 @@ export class ListComponent implements OnInit {
         updatedDate: p.updatedDate,
         createdDate: p.createdDate,
         productImages: p.productImages,
-        showCaseImagePath: `${this.baseUrls?.baseStorageUrl}/${
+        showCaseImagePath: `${
+          this.baseUrls?.baseStorageUrl.length! > 0
+            ? this.baseUrls?.baseStorageUrl + '/'
+            : ''
+        }${
           p.productImages?.length
             ? p.productImages.find((i) => i.isShowCaseImage)?.path
             : ''

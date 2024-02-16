@@ -36,6 +36,13 @@
         >
           Please Login in first!
         </button>
+        <button
+          *ngIf="authService.isAuthenticated && product.stock! <= 0"
+          disabled="true"
+          class="btn btn-warning"
+        >
+          Out Of Stock!
+        </button>
         <span
           class="d-inline-block"
           tabindex="0"

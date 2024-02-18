@@ -37,8 +37,10 @@ export class UserAuthService {
     if (response) {
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
-      this.authService.hasAccessToAdminDashboard =
-        response.hasAccessToAdminDashboard;
+      localStorage.setItem(
+        'hasAccessToAdminDashboard',
+        `${response.hasAccessToAdminDashboard}`
+      );
     }
     callBackFunction?.();
   }
@@ -58,6 +60,10 @@ export class UserAuthService {
     if (response) {
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
+      localStorage.setItem(
+        'hasAccessToAdminDashboard',
+        `${response.hasAccessToAdminDashboard}`
+      );
     }
     callBackFunction?.();
   }
@@ -81,6 +87,10 @@ export class UserAuthService {
       if (response) {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('refreshToken', response.refreshToken);
+        localStorage.setItem(
+          'hasAccessToAdminDashboard',
+          `${response.hasAccessToAdminDashboard}`
+        );
       }
       callBackFunction?.();
     } catch (error) {

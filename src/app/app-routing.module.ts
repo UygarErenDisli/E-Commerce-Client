@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './admin/layout/layout.component';
 import { DashboardComponent } from './admin/components/dashboard/dashboard.component';
 import { authGuard } from './guards/common/auth.guard';
+import { HomeComponent } from './ui/components/home/home.component';
 
 const routes: Routes = [
   {
@@ -67,10 +68,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () =>
-      import('./ui/components/products/products.module').then(
-        (module) => module.ProductsModule
-      ),
+    component: HomeComponent,
   },
   {
     path: 'products',

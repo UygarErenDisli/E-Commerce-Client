@@ -46,6 +46,7 @@ export class AppComponent {
 
   singOut() {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('hasAccessToAdminDashboard');
     this.authService.checkIdentity();
     this.router.navigate(['']);
     this.toastr.message('You have been logged out.', 'Signed out', {

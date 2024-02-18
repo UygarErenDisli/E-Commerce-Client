@@ -46,9 +46,7 @@ import { DynamicComponentLoaderDirective } from './directives/common/dynamic-com
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '574789429863-pojrkcd9nntt8ae8693dsugdk6kblk7r.apps.googleusercontent.com'
-            ),
+            provider: new GoogleLoginProvider(''),
           },
         ],
         onError: (err) => {
@@ -76,11 +74,9 @@ import { DynamicComponentLoaderDirective } from './directives/common/dynamic-com
       config: {
         tokenGetter: (): string | Promise<string> => {
           if (typeof localStorage !== 'undefined') {
-            // Access localStorage here
             return localStorage?.getItem('accessToken')!;
           } else {
             return new Promise((resolve, reject) => {
-              // Resolve the promise with an empty string
               resolve('Not Authrozed');
             });
           }

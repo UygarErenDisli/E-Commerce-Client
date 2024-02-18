@@ -25,6 +25,7 @@ export class BasketsComponent extends SpinnerComponent implements OnInit {
   basketItems?: ListBasketItems[];
   totalItems?: number;
   totalPrice?: number;
+  hasItemInBasket!: boolean;
 
   constructor(
     spinner: NgxSpinnerService,
@@ -42,6 +43,7 @@ export class BasketsComponent extends SpinnerComponent implements OnInit {
 
   private async calculateSummary() {
     this.basketItems = await this.basketService.getbasketItems();
+    this.hasItemInBasket = this.basketItems.length > 0 ? true : false;
     this.totalItems = this.basketItems?.length;
     this.totalPrice = this.basketItems?.reduce(
       (sum, item) => (sum += item.price * item.quantity),

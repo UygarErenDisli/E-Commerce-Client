@@ -8,10 +8,16 @@ export class AuthService {
   constructor(private jwtHelper: JwtHelperService) {}
 
   checkIdentity() {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage?.getItem('accessToken');
     let isExpired: boolean;
 
     try {
+      const state = localStorage?.getItem('hasAccessToAdminDashboard');
+      if (state == '' || state == null) {
+        _hasAccessToAdminDashboard = false;
+      } else {
+        _hasAccessToAdminDashboard = state == 'true' ? true : false;
+      }
       isExpired = this.jwtHelper.isTokenExpired(token);
     } catch (error) {
       isExpired = true;

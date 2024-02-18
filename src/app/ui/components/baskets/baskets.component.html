@@ -55,8 +55,21 @@
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
       Close
     </button>
-    <button type="button" class="btn btn-success" (click)="completeShopping()">
+    <button
+      type="button"
+      class="btn btn-success"
+      *ngIf="hasItemInBasket"
+      (click)="completeShopping()"
+    >
       Complete Shopping
+    </button>
+    <button
+      type="button"
+      class="btn btn-success"
+      *ngIf="!hasItemInBasket"
+      disabled
+    >
+      Please add atleast 1 item to your basket
     </button>
   </div>
 </div>
